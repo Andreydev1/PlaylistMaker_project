@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background_color"
+    android:orientation="vertical">
+
+    <LinearLayout style="@style/HeaderLayoutStyle"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/fl_settings_back"
+            style="@style/HeaderIconLayoutStyle">
+
+            <ImageView style="@style/HeaderIconStyle"/>
+        </FrameLayout>
+
+        <TextView
+            style="@style/HeaderTextStyle"
+            android:text="@string/button_settings_name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/padding_title_content"
+        android:orientation="vertical">
+
+        <FrameLayout style="@style/SettingsListItemStyle"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="@string/settings_dark_mode"
+                style="@style/SettingsTextStyle"/>
+
+            <FrameLayout
+                android:layout_width="56dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="6dp">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:checked="false"
+                    app:showText="false" />
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <FrameLayout style="@style/SettingsListItemStyle"
+            android:id="@+id/shareLayout">
+
+            <TextView
+                android:text="@string/settings_share_app"
+                style="@style/SettingsTextStyle"/>
+
+            <FrameLayout style="@style/SettingsImageLayoutStyle">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_share"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <FrameLayout style="@style/SettingsListItemStyle"
+            android:id="@+id/supportLayout">
+
+            <TextView
+                android:text="@string/settings_support"
+                style="@style/SettingsTextStyle"/>
+
+            <FrameLayout style="@style/SettingsImageLayoutStyle">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_support"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <FrameLayout style="@style/SettingsListItemStyle"
+            android:id="@+id/userAgreementLayout">
+
+            <TextView
+                android:text="@string/settings_user_agreement"
+                style="@style/SettingsTextStyle"/>
+
+            <FrameLayout style="@style/SettingsImageLayoutStyle">
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_arrow_forward"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
