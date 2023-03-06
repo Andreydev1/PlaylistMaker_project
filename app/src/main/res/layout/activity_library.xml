@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".LibraryActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/media_lib_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:logo="@drawable/ic_arrow_back"
+        app:title="@string/media_lib_text"
+        app:titleMarginStart="64dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
     companion object {
@@ -24,7 +25,7 @@ class SearchActivity : AppCompatActivity() {
 
         val inputSearch = findViewById<EditText>(R.id.et_search)
         val clearImage = findViewById<ImageView>(R.id.iv_search_clear)
-        val backLayout = findViewById<FrameLayout>(R.id.fl_search_back)
+        val backLayout = findViewById<androidx.appcompat.widget.Toolbar>(R.id.search_back)
 
         inputSearch.setText(inputText)
 
@@ -53,6 +54,42 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         inputSearch.addTextChangedListener(simpleTextWatcher)
+
+        val trackAdapter = TrackAdapter(
+            listOf(
+                Track(
+                    "Smells Like Teen Spirit",
+                    "Nirvana",
+                    "5:01",
+                    getString(R.string.Nirvana_album_cover_img),
+                ),
+                Track(
+                    " Billie Jean",
+                    "Michael Jackson",
+                    "5:01",
+                    getString(R.string.MichaelJackson_album_cover_img),
+                ),
+                Track(
+                    "Stayin' Alive",
+                    "Bee Gees",
+                    "4:10",
+                    getString(R.string.BeeGees_album_cover_img),
+                ),
+                Track(
+                    "Whole Lotta Love",
+                    "Led Zeppelin",
+                    "5:33",
+                    getString(R.string.LedZeppelin_album_cover_img),
+                ),
+                Track(
+                    "Sweet Child O'Mine",
+                    "Guns N' Roses",
+                    "5:03",
+                    getString(R.string.GunsNroses_album_cover_img),
+                ),
+            ))
+        val recyclerView = findViewById<RecyclerView>(R.id.rvTracks)
+        recyclerView.adapter = trackAdapter
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

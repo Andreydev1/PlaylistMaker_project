@@ -1,25 +1,24 @@
 package com.example.playlistmaker
 
-import android.app.ActivityManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.FrameLayout
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
-class SettingsActivity: AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        val backLayout = findViewById<FrameLayout>(R.id.fl_settings_back)
+        val backBtn = findViewById<androidx.appcompat.widget.Toolbar>(R.id.settings_back)
 
-        backLayout.setOnClickListener {
+        backBtn.setOnClickListener {
             finish()
         }
 
-        val shareLayout = findViewById<FrameLayout>(R.id.shareLayout)
-        shareLayout.setOnClickListener {
+        val shareBtn = findViewById<Button>(R.id.share_button)
+        shareBtn.setOnClickListener {
             Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_link))
@@ -27,8 +26,8 @@ class SettingsActivity: AppCompatActivity() {
             }
         }
 
-        val supportLayout = findViewById<FrameLayout>(R.id.supportLayout)
-        supportLayout.setOnClickListener {
+        val supportBtn = findViewById<Button>(R.id.tech_support_button)
+        supportBtn.setOnClickListener {
             Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.share_app_email)))
@@ -38,11 +37,16 @@ class SettingsActivity: AppCompatActivity() {
             }
         }
 
-        val userAgreementLayout = findViewById<FrameLayout>(R.id.userAgreementLayout)
-        userAgreementLayout.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.user_agreement_link))))
+        val userAgreementBtn = findViewById<Button>(R.id.user_agreement_button)
+        userAgreementBtn.setOnClickListener {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(getString(R.string.user_agreement_link))
+                )
+            )
         }
     }
 
-   
+
 }

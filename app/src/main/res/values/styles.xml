@@ -15,7 +15,7 @@
         <item name="iconSize">@dimen/main_icon_size</item>
         <item name="iconTint">@color/deep_gray</item>
     </style>
-    
+
     <style name="SettingsTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
@@ -73,5 +73,20 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textColor">?attr/text_color</item>
+    </style>
+
+    <style name="SettingsButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">61dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textSize">@dimen/settings_button_text_size</item>
+        <item name="iconGravity">end</item>
+        <item name="iconTint">@color/grey</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:backgroundTint">?attr/background_color</item>
+        <item name="android:letterSpacing">0.01</item>
+
     </style>
 </resources>
