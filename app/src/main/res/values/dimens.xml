@@ -35,4 +35,5 @@
     <dimen name="track_time_margin_start">-100dp</dimen>
     <dimen name="arrow_margin_end">20dp</dimen>
     <dimen name="arrow_margin_top">15dp</dimen>
+    <dimen name="track_rounded_corners">2dp</dimen>
 </resources>
