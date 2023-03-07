@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:contentPaddingTop="@dimen/default_padding_size"
+    app:contentPaddingBottom="@dimen/default_padding_size"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:clickable="true"
+    app:cardElevation="@dimen/no_elevetation"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/background_color"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/track_image"
+        android:layout_width="@dimen/album_icon_size"
+        android:layout_height="@dimen/album_icon_size"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/album_cover" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/track_name_margin_start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/track_name"
+            android:fontFamily="@font/ys_display_regular"
+            android:textSize="16sp"
+            android:textColor="?attr/colorSecondary"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_marginEnd="@dimen/track_name_margin_end"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Here Comes The Sun (Remastered 2008)" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <FrameLayout
+                android:id="@+id/track_card"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/track_time_padding_end"
+                android:lines="1">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/artist_name"
+                    android:paddingEnd="@dimen/artist_name_padding_end"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="11sp"
+                    android:ellipsize="end"
+                    tools:text="The Beatles"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/track_time"
+                android:drawablePadding="@dimen/artist_name_padding_end"
+                android:layout_marginStart="@dimen/track_time_margin_start"
+                tools:text="2:55"
+                android:fontFamily="@font/ys_display_regular"
+                android:textSize="11sp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:drawableLeftCompat="@drawable/ic_dot" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_gravity="end"
+        android:layout_marginEnd="@dimen/arrow_margin_end"
+        android:layout_marginTop="@dimen/arrow_margin_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_forward" />
+
+</androidx.cardview.widget.CardView>
