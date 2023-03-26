@@ -5,8 +5,8 @@
         <item name="colorPrimary">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/YPBlack</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
 
         <!-- Customize your theme here. -->
@@ -17,5 +17,6 @@
         <item name="icon_header_color">@color/deep_gray</item>
         <item name="background_search_color">@color/ultra_light_gray</item>
         <item name="search_color">@color/light_gray</item>
+        <item name="search_icons_color">@color/YPBlack</item>
     </style>
 </resources>

@@ -29,5 +29,7 @@
     <string name="itunes_api_url">https://itunes.apple.com</string>
     <string name="nothing_found_string">Ничего не нашлось</string>
     <string name="refresh_button_string">Обновить</string>
+    <string name="no_internet_search_failure">Проблемы со связью\n\Загрузка не удалась. Проверьте подключение к интернету</string>
+
 
 </resources>

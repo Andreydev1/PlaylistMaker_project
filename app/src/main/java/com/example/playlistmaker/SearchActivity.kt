@@ -86,15 +86,17 @@ class SearchActivity : AppCompatActivity() {
             else false
         }
         refreshButton.setOnClickListener{
+
             findTracks()
         }
 
         clearImage.setOnClickListener {
+            tracks.clear()
             inputSearch.setText("")
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
-            tracks.clear()
+
             onSearchResult(SearchStatus.SUCCESS)
         }
 
@@ -126,19 +128,15 @@ class SearchActivity : AppCompatActivity() {
     private fun findTracks(){
         itunesService.search(inputSearch.text.toString()).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.body()?.results?.isNotEmpty() == true) {
-                    tracks.addAll(response.body()?.results!!)
-                    onSearchResult(SearchStatus.SUCCESS)
-                    trackAdapter.notifyDataSetChanged()
-                }
                 if (response.code() == 200) {
-                    tracks.clear()
-                }
-                if (tracks.isEmpty()) {
-                    onSearchResult(SearchStatus.NOTHING_FOUND)
-                }
-                else{
-                    onSearchResult(SearchStatus.NO_INTERNET)
+                    if (response.body()?.results?.isNotEmpty() == true) {
+                        tracks.clear()
+                        tracks.addAll(response.body()?.results!!)
+                        onSearchResult(SearchStatus.SUCCESS)
+                        trackAdapter.notifyDataSetChanged()
+                    } else
+                        tracks.clear()
+                        onSearchResult(SearchStatus.NOTHING_FOUND)
                 }
             }
 
@@ -154,15 +152,15 @@ private fun onSearchResult(resultStatus: SearchStatus){
         }
         SearchStatus.NOTHING_FOUND->{
             somethingWentWrong.visibility = View.VISIBLE
-            errorImage.setImageResource(R.drawable.ic_nothing_found_search)
+            errorImage.setImageResource(R.drawable.ic_nothing_found)
             errorText.text = getString(R.string.nothing_found_string)
             refreshButton.visibility = View.GONE
         }
         SearchStatus.NO_INTERNET->{
             tracks.clear()
             somethingWentWrong.visibility = View.VISIBLE
-            errorImage.setImageResource(R.drawable.ic_no_internet_search)
-            errorText.text = getString(R.string.refresh_button_string)
+            errorImage.setImageResource(R.drawable.ic_no_internet)
+            errorText.text = getString(R.string.no_internet_search_failure)
             refreshButton.visibility = View.VISIBLE
         }
     }
