@@ -23,7 +23,8 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_TEXT = "SEARCH_TEXT"
     }
-    enum class SearchStatus{
+
+    enum class SearchStatus {
         SUCCESS,
         NOTHING_FOUND,
         NO_INTERNET
@@ -36,9 +37,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var backLayout: Toolbar
     private lateinit var searchRv: RecyclerView
     private lateinit var refreshButton: Button
-    private lateinit var somethingWentWrong:LinearLayout
+    private lateinit var somethingWentWrong: LinearLayout
 
-    private var tracks = ArrayList<Track>()
+    private var tracks = mutableListOf<Track>()
     private val trackAdapter = TrackAdapter()
     private var inputText = ""
     private val itunesBaseUrl = ("https://itunes.apple.com")
@@ -47,8 +48,6 @@ class SearchActivity : AppCompatActivity() {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val itunesService = itunesRetrofit.create(ItunesApi::class.java)
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +59,8 @@ class SearchActivity : AppCompatActivity() {
 
 
     }
-    private fun viewfinder(){
+
+    private fun viewfinder() {
         inputSearch = findViewById(R.id.et_search)
         clearImage = findViewById(R.id.iv_search_clear)
         backLayout = findViewById(R.id.search_back)
@@ -71,27 +71,27 @@ class SearchActivity : AppCompatActivity() {
         errorText = findViewById(R.id.error_text_tv)
     }
 
-    private fun setOnClickListeners(){
+    private fun setOnClickListeners() {
         inputSearch.setText(inputText)
         backLayout.setOnClickListener {
             finish()
         }
         inputSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
                 findTracks()
                 true
-            }
-            else false
+            } else false
         }
-        refreshButton.setOnClickListener{
+        refreshButton.setOnClickListener {
 
             findTracks()
         }
 
         clearImage.setOnClickListener {
-            tracks.clear()
+            trackAdapter.setTracks(tracks)
             inputSearch.setText("")
             val inputMethodManager =
                 getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -119,24 +119,24 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun recyclerViewModel(){
+    private fun recyclerViewModel() {
         trackAdapter.tracks = tracks
         searchRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchRv.adapter = trackAdapter
     }
 
-    private fun findTracks(){
+    private fun findTracks() {
         itunesService.search(inputSearch.text.toString()).enqueue(object : Callback<TrackResponse> {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                 if (response.code() == 200) {
                     if (response.body()?.results?.isNotEmpty() == true) {
-                        tracks.clear()
+                        trackAdapter.setTracks(tracks)
                         tracks.addAll(response.body()?.results!!)
                         onSearchResult(SearchStatus.SUCCESS)
-                        trackAdapter.notifyDataSetChanged()
+
                     } else
-                        tracks.clear()
-                        onSearchResult(SearchStatus.NOTHING_FOUND)
+                        trackAdapter.setTracks(tracks)
+                    onSearchResult(SearchStatus.NOTHING_FOUND)
                 }
             }
 
@@ -145,27 +145,29 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
-private fun onSearchResult(resultStatus: SearchStatus){
-    when(resultStatus){
-        SearchStatus.SUCCESS->{
-            somethingWentWrong.visibility = View.GONE
+
+    private fun onSearchResult(resultStatus: SearchStatus) {
+        when (resultStatus) {
+            SearchStatus.SUCCESS -> {
+                somethingWentWrong.visibility = View.GONE
+            }
+            SearchStatus.NOTHING_FOUND -> {
+                somethingWentWrong.visibility = View.VISIBLE
+                errorImage.setImageResource(R.drawable.ic_nothing_found)
+                errorText.text = getString(R.string.nothing_found_string)
+                refreshButton.visibility = View.GONE
+            }
+            SearchStatus.NO_INTERNET -> {
+                tracks.clear()
+                somethingWentWrong.visibility = View.VISIBLE
+                errorImage.setImageResource(R.drawable.ic_no_internet)
+                errorText.text = getString(R.string.no_internet_search_failure)
+                refreshButton.visibility = View.VISIBLE
+            }
         }
-        SearchStatus.NOTHING_FOUND->{
-            somethingWentWrong.visibility = View.VISIBLE
-            errorImage.setImageResource(R.drawable.ic_nothing_found)
-            errorText.text = getString(R.string.nothing_found_string)
-            refreshButton.visibility = View.GONE
-        }
-        SearchStatus.NO_INTERNET->{
-            tracks.clear()
-            somethingWentWrong.visibility = View.VISIBLE
-            errorImage.setImageResource(R.drawable.ic_no_internet)
-            errorText.text = getString(R.string.no_internet_search_failure)
-            refreshButton.visibility = View.VISIBLE
-        }
+
     }
 
-}
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(SEARCH_TEXT, inputText)
@@ -175,6 +177,8 @@ private fun onSearchResult(resultStatus: SearchStatus){
         super.onRestoreInstanceState(savedInstanceState)
         inputText = savedInstanceState.getString(SEARCH_TEXT, "")
     }
+
     private fun clearButtonVisibility(s: CharSequence?) =
         if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+
 }
