@@ -16,8 +16,12 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class SearchActivity : AppCompatActivity() {
     companion object {
@@ -39,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var refreshButton: Button
     private lateinit var somethingWentWrong: LinearLayout
 
-    private var tracks = mutableListOf<Track>()
+
     private val trackAdapter = TrackAdapter()
     private var inputText = ""
     private val itunesBaseUrl = ("https://itunes.apple.com")
@@ -79,7 +83,7 @@ class SearchActivity : AppCompatActivity() {
         inputSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
                 findTracks()
                 true
@@ -91,13 +95,14 @@ class SearchActivity : AppCompatActivity() {
         }
 
         clearImage.setOnClickListener {
-            trackAdapter.setTracks(tracks)
+            trackAdapter.setTracks(null)
             inputSearch.setText("")
             val inputMethodManager =
-                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
 
             onSearchResult(SearchStatus.SUCCESS)
+            somethingWentWrong.visibility = View.GONE
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -120,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun recyclerViewModel() {
-        trackAdapter.tracks = tracks
+
         searchRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchRv.adapter = trackAdapter
     }
@@ -130,12 +135,11 @@ class SearchActivity : AppCompatActivity() {
             override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                 if (response.code() == 200) {
                     if (response.body()?.results?.isNotEmpty() == true) {
-                        trackAdapter.setTracks(tracks)
-                        tracks.addAll(response.body()?.results!!)
+                        trackAdapter.setTracks(response.body()?.results!!)
                         onSearchResult(SearchStatus.SUCCESS)
 
                     } else
-                        trackAdapter.setTracks(tracks)
+                        trackAdapter.setTracks(null)
                     onSearchResult(SearchStatus.NOTHING_FOUND)
                 }
             }
@@ -149,7 +153,7 @@ class SearchActivity : AppCompatActivity() {
     private fun onSearchResult(resultStatus: SearchStatus) {
         when (resultStatus) {
             SearchStatus.SUCCESS -> {
-                somethingWentWrong.visibility = View.GONE
+
             }
             SearchStatus.NOTHING_FOUND -> {
                 somethingWentWrong.visibility = View.VISIBLE
@@ -158,7 +162,7 @@ class SearchActivity : AppCompatActivity() {
                 refreshButton.visibility = View.GONE
             }
             SearchStatus.NO_INTERNET -> {
-                tracks.clear()
+                trackAdapter.setTracks(null)
                 somethingWentWrong.visibility = View.VISIBLE
                 errorImage.setImageResource(R.drawable.ic_no_internet)
                 errorText.text = getString(R.string.no_internet_search_failure)

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +47,8 @@ class SettingsActivity : AppCompatActivity() {
                 )
             )
         }
+
     }
-
-
 }
+
+
