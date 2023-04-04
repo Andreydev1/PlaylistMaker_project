@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nothing_found_string">Ничего не нашлось</string>
+    <string name="refresh_button_string">Обновить</string>
+</resources>
