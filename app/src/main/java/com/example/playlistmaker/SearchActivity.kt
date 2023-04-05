@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -42,9 +41,13 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchRv: RecyclerView
     private lateinit var refreshButton: Button
     private lateinit var somethingWentWrong: LinearLayout
-
+    private lateinit var searchHistoryLayout: LinearLayout
+    private lateinit var searchHistoryRv: RecyclerView
+    private lateinit var searchHistoryClearButton: Button
+    private lateinit var history: SearchHistory
 
     private val trackAdapter = TrackAdapter()
+    private val historyAdapter = TrackAdapter()
     private var inputText = ""
     private val itunesBaseUrl = ("https://itunes.apple.com")
     private val itunesRetrofit = Retrofit.Builder()
@@ -57,10 +60,13 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        history = SearchHistory(getSharedPreferences(PLAYLIST_MAKER_PREFS, MODE_PRIVATE))
+
         viewfinder()
         setOnClickListeners()
         recyclerViewModel()
-
+        changeHistoryVisibility()
 
     }
 
@@ -73,6 +79,9 @@ class SearchActivity : AppCompatActivity() {
         somethingWentWrong = findViewById(R.id.search_something_went_wrong)
         errorImage = findViewById(R.id.search_error_iv)
         errorText = findViewById(R.id.error_text_tv)
+        searchHistoryLayout = findViewById(R.id.search_history_layout)
+        searchHistoryRv = findViewById(R.id.rvTracksHistory)
+        searchHistoryClearButton = findViewById(R.id.search_clear_history_button)
     }
 
     private fun setOnClickListeners() {
@@ -103,6 +112,13 @@ class SearchActivity : AppCompatActivity() {
 
             onSearchResult(SearchStatus.SUCCESS)
             somethingWentWrong.visibility = View.GONE
+            changeHistoryVisibility()
+        }
+        searchHistoryClearButton.setOnClickListener{
+            history.clear()
+            changeHistoryVisibility()
+            historyAdapter.notifyDataSetChanged()
+
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -113,6 +129,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 inputText = s.toString()
                 clearImage.visibility = clearButtonVisibility(s)
+                searchHistoryLayout.visibility = if (inputSearch.hasFocus() && s?.isEmpty() == true) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -124,10 +141,24 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
+    private fun changeHistoryVisibility() {
+        searchHistoryLayout.visibility = if (history.trackList.size > 0) View.VISIBLE else View.GONE
+    }
+
     private fun recyclerViewModel() {
+        trackAdapter.onItemClick = { track ->
+            history.add(track)
+            historyAdapter.notifyDataSetChanged()
+        }
 
         searchRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchRv.adapter = trackAdapter
+
+        historyAdapter.tracks = history.trackList
+        searchHistoryRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        searchHistoryRv.adapter = historyAdapter
+
+
     }
 
     private fun findTracks() {
@@ -180,6 +211,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         inputText = savedInstanceState.getString(SEARCH_TEXT, "")
+        changeHistoryVisibility()
     }
 
     private fun clearButtonVisibility(s: CharSequence?) =

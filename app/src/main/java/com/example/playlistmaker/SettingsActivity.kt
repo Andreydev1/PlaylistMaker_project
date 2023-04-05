@@ -13,12 +13,13 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val backBtn = findViewById<androidx.appcompat.widget.Toolbar>(R.id.settings_back)
-
+        val shareBtn = findViewById<Button>(R.id.share_button)
+        val supportBtn = findViewById<Button>(R.id.tech_support_button)
+        val userAgreementBtn = findViewById<Button>(R.id.user_agreement_button)
+        val darkThemeSwitcher = findViewById<SwitchCompat>(R.id.dark_theme_switcher)
         backBtn.setOnClickListener {
             finish()
         }
-
-        val shareBtn = findViewById<Button>(R.id.share_button)
         shareBtn.setOnClickListener {
             Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
@@ -26,8 +27,6 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(this, "Share with:"))
             }
         }
-
-        val supportBtn = findViewById<Button>(R.id.tech_support_button)
         supportBtn.setOnClickListener {
             Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
@@ -37,8 +36,6 @@ class SettingsActivity : AppCompatActivity() {
                 startActivity(this)
             }
         }
-
-        val userAgreementBtn = findViewById<Button>(R.id.user_agreement_button)
         userAgreementBtn.setOnClickListener {
             startActivity(
                 Intent(
@@ -47,7 +44,13 @@ class SettingsActivity : AppCompatActivity() {
                 )
             )
         }
-
+        darkThemeSwitcher.setOnCheckedChangeListener{switcher, checked->
+            (applicationContext as App).darkThemeSwitch(checked)
+            val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFS, MODE_PRIVATE)
+            sharedPrefs.edit()
+                .putBoolean(DARK_THEME_PREFS, checked)
+                .apply()
+        }
     }
 }
 

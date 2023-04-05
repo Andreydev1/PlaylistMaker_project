@@ -30,6 +30,8 @@
     <string name="nothing_found_string">Ничего не нашлось</string>
     <string name="refresh_button_string">Обновить</string>
     <string name="no_internet_search_failure">Проблемы со связью\n\Загрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="clear_history_btn">Очистить историю</string>
+    <string name="search_history_hint">Вы искали</string>
 
 
 </resources>
