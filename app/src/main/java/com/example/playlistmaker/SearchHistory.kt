@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.gson.Gson
 const val SEARCH_HISTORY_SIZE = 10
 const val SEARCH_HISTORY = "search_history"
@@ -21,9 +22,9 @@ class SearchHistory(val sharedPrefs: SharedPreferences) {
             if (trackList.size > SEARCH_HISTORY_SIZE) trackList.removeAt(SEARCH_HISTORY_SIZE)
 
             val json = Gson().toJson(trackList)
-            sharedPrefs.edit()
-                .putString(SEARCH_HISTORY, json)
-                .apply()
+            sharedPrefs.edit {
+                putString(SEARCH_HISTORY, json)
+            }
         }
 
         fun clear(){
