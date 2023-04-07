@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
     internal var tracks = mutableListOf<Track>()
+    var onItemClick: ((Track) -> Unit)? = null
      fun setTracks(newTracks: List<Track>?) {
         tracks.clear()
         if (!newTracks.isNullOrEmpty()) {
@@ -25,6 +26,9 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
+        holder.itemView.setOnClickListener{
+            onItemClick?.invoke(tracks[position])
+        }
     }
 
 }
