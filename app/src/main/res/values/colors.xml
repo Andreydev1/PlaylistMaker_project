@@ -16,4 +16,6 @@
     <color name="background_blue">#3772E7</color>
     <color name="grey">#AEAFB4</color>
     <color name="grey_text">#3F3F3F</color>
+    <color name="red">#ff0000</color>
+    <color name="media_lib_grey_button">#C5C6C7</color>
 </resources>
