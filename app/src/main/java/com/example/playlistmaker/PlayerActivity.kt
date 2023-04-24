@@ -8,8 +8,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import java.text.SimpleDateFormat
 import java.util.Locale
-
+const val TRACK_DATA = "track"
 class PlayerActivity : AppCompatActivity() {
+
 
     lateinit var playerBackButton: androidx.appcompat.widget.Toolbar
     lateinit var currentTrack: Track
@@ -37,7 +38,7 @@ class PlayerActivity : AppCompatActivity() {
         trackGenre = findViewById(R.id.player_track_genre_data)
         trackCountry = findViewById(R.id.player_track_country_data)
 
-        currentTrack = intent.getSerializableExtra("track") as Track
+        currentTrack = intent.getSerializableExtra(TRACK_DATA) as Track
         viewFinder()
         setOnClickListeners()
     }
@@ -47,10 +48,10 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun viewFinder() {
-        if (currentTrack != null) {
+
             Glide.with(applicationContext)
                 .load(currentTrack.getCoverArtWork())
-                .transform(RoundedCorners(8))
+                .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.player_rounded_corners)))
                 .placeholder(R.drawable.media_lib_cover_placeholder)
                 .into(albumCover)
 
@@ -62,6 +63,5 @@ class PlayerActivity : AppCompatActivity() {
             trackYear.text = currentTrack.releaseDate.substring(0, 4)
             trackGenre.text = currentTrack.primaryGenreName
             trackCountry.text = currentTrack.country
-        }
     }
 }
