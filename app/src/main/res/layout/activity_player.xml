@@ -85,7 +85,7 @@
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:src="@drawable/media_lib_player_button"
-        android:layout_marginTop="25dp"
+
         app:backgroundTint="?attr/colorOnSecondary"
         />
     <ImageView
