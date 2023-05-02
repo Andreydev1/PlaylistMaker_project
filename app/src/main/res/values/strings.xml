@@ -32,6 +32,27 @@
     <string name="no_internet_search_failure">Проблемы со связью\n\Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="clear_history_btn">Очистить историю</string>
     <string name="search_history_hint">Вы искали</string>
+    <string name="media_lib_track_name">media_lib_track_name</string>
+    <string name="media_lib_artist_name">media_lib_artist_name</string>
+    <string name="media_lib_track_duration">media_lib_track_duration</string>
+    <string name="media_lib_track_album">media_lib_track_album</string>
+    <string name="media_lib_track_year">media_lib_track_year</string>
+    <string name="media_lib_track_genre">media_lib_track_genre</string>
+    <string name="media_lib_track_country">media_lib_track_country</string>
+    <string name="track_time_data">5:35</string>
+    <string name="track_name_data">Yesterday (Remastered 2009)</string>
+    <string name="track_year_data">1965</string>
+    <string name="track_genre_data">Жанр</string>
+    <string name="track_country_data">Великобритания</string>
+    <string name="track_country">Страна</string>
+    <string name="track_genre">Жанр</string>
+    <string name="track_year">Год</string>
+    <string name="track_album">Альбом</string>
+    <string name="track_duration">Длительность</string>
+    <string name="player_timer">0:30</string>
+    <string name="rock">Rock</string>
+    <string name="yesterday_remastered_2009">Yesterday (Remastered 2009)</string>
+    <string name="the_beatles">The Beatles</string>
 
 
 </resources>

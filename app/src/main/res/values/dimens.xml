@@ -36,4 +36,5 @@
     <dimen name="arrow_margin_end">20dp</dimen>
     <dimen name="arrow_margin_top">15dp</dimen>
     <dimen name="track_rounded_corners">2dp</dimen>
+    <dimen name="player_rounded_corners">8dp</dimen>
 </resources>

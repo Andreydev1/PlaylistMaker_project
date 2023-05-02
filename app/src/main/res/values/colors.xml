@@ -16,4 +16,7 @@
     <color name="background_blue">#3772E7</color>
     <color name="grey">#AEAFB4</color>
     <color name="grey_text">#3F3F3F</color>
+    <color name="red">#ff0000</color>
+    <color name="player_grey_button">#C5C6C7</color>
+    <color name="player_grey_button_night">#535459</color>
 </resources>

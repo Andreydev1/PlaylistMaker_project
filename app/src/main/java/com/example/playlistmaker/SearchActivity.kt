@@ -1,5 +1,7 @@
 package com.example.playlistmaker
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -46,6 +48,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryClearButton: Button
     private lateinit var history: SearchHistory
 
+
     private val trackAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
     private var inputText = ""
@@ -82,6 +85,7 @@ class SearchActivity : AppCompatActivity() {
         searchHistoryLayout = findViewById(R.id.search_history_layout)
         searchHistoryRv = findViewById(R.id.rvTracksHistory)
         searchHistoryClearButton = findViewById(R.id.search_clear_history_button)
+
     }
 
     private fun setOnClickListeners() {
@@ -149,7 +153,9 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter.onItemClick = { track ->
             history.add(track)
             historyAdapter.notifyDataSetChanged()
+            playerEnable(track)
         }
+        historyAdapter.onItemClick = {track -> playerEnable(track) }
 
         searchRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         searchRv.adapter = trackAdapter
@@ -201,6 +207,11 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+    }
+    private fun playerEnable(track: Track){
+        val player = Intent(this, PlayerActivity::class.java)
+        player.putExtra("track", track)
+        startActivity(player)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

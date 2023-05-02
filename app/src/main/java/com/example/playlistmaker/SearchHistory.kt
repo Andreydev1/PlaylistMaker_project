@@ -7,7 +7,7 @@ import com.google.gson.Gson
 const val SEARCH_HISTORY_SIZE = 10
 const val SEARCH_HISTORY = "search_history"
 
-class SearchHistory(val sharedPrefs: SharedPreferences) {
+class SearchHistory(private val sharedPrefs: SharedPreferences) {
     var trackList: MutableList<Track> = get().toMutableList()
 
     private fun get(): Array<Track> {
