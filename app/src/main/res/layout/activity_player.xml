@@ -84,10 +84,9 @@
         android:paddingBottom="12dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:src="@drawable/media_lib_player_button"
-
-        app:backgroundTint="?attr/colorOnSecondary"
-        />
+        android:visibility="visible"
+        android:src="@drawable/media_lib_play_button"
+        app:backgroundTint="?attr/colorOnSecondary"/>
     <ImageView
         android:id="@+id/player_like_button"
         android:layout_width="wrap_content"
