@@ -21,10 +21,9 @@ class PlayerActivity : AppCompatActivity() {
         private const val STATE_PLAYING = 2
         private const val STATE_PAUSED = 3
         private const val TIMER_DELAY = 500L
-
     }
 
-    private lateinit var playerBackButton: androidx.appcompat.widget.Toolbar
+    private lateinit var toolBar: androidx.appcompat.widget.Toolbar
     private lateinit var currentTrack: Track
     private lateinit var albumCover: ImageView
     private lateinit var trackName: TextView
@@ -37,7 +36,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var playButton: ImageView
     private lateinit var trackTimer: TextView
 
-
     private var currentState = STATE_DEFAULT
     private var playerState = STATE_DEFAULT
     private var mediaPlayer = MediaPlayer()
@@ -45,7 +43,6 @@ class PlayerActivity : AppCompatActivity() {
     private var playerRunnable = Runnable {
         updateTime()
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -56,18 +53,16 @@ class PlayerActivity : AppCompatActivity() {
         preparePlayer()
         updatePlayerState()
     }
-
     private fun setOnClickListeners() {
-        playerBackButton.setOnClickListener { finish() }
+        toolBar.setOnClickListener { finish() }
         playButton.setOnClickListener {
             playBackControl()
 
         }
     }
-
     private fun viewFinder() {
         trackTimer = findViewById(R.id.player_timer)
-        playerBackButton = findViewById(R.id.player_back)
+        toolBar = findViewById(R.id.player_back)
         albumCover = findViewById(R.id.player_album_cover)
         trackName = findViewById(R.id.player_track_name)
         artistName = findViewById(R.id.player_artist_name)
@@ -77,7 +72,6 @@ class PlayerActivity : AppCompatActivity() {
         trackGenre = findViewById(R.id.player_track_genre_data)
         trackCountry = findViewById(R.id.player_track_country_data)
         playButton = findViewById(R.id.player_play_button)
-
 
         if (currentTrack != null) {
             Glide.with(applicationContext)
@@ -99,61 +93,6 @@ class PlayerActivity : AppCompatActivity() {
             trackCountry.text = currentTrack.country
         }
     }
-
-    private fun updateTime() {
-        playerHandler.postDelayed(object : Runnable {
-            override fun run() {
-                if (playerState == STATE_PLAYING) {
-                    setTime()
-                    playerHandler.postDelayed(this, TIMER_DELAY)
-                }
-            }
-        }, TIMER_DELAY)
-    }
-
-
-
-    private fun setTime() {
-        trackTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mediaPlayer.release()
-        playerHandler.removeCallbacks(playerRunnable)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pausePlayer()
-    }
-
-    private fun playBackControl() {
-        when (playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        playerState = STATE_PAUSED
-        playButton.setImageResource(R.drawable.media_lib_play_button)
-        playButton.visibility = View.VISIBLE
-    }
-
-    private fun startPlayer() {
-        mediaPlayer.start()
-        playerState = STATE_PLAYING
-        playButton.setImageResource(R.drawable.media_lib_pause_button)
-        updateTime()
-    }
-
     private fun preparePlayer() {
         mediaPlayer.setDataSource(currentTrack.previewUrl)
         mediaPlayer.prepareAsync()
@@ -168,7 +107,6 @@ class PlayerActivity : AppCompatActivity() {
             playButton.setImageResource(R.drawable.media_lib_play_button)
         }
     }
-
     private fun updatePlayerState() {
         currentState = if (playerState == STATE_PLAYING) {
             STATE_PLAYING
@@ -182,5 +120,50 @@ class PlayerActivity : AppCompatActivity() {
             playButton.setImageResource(R.drawable.media_lib_play_button)
             playButton.visibility = View.VISIBLE
         }
+    }
+    private fun updateTime() {
+        playerHandler.postDelayed(object : Runnable {
+            override fun run() {
+                if (playerState == STATE_PLAYING) {
+                    setTime()
+                    playerHandler.postDelayed(this, TIMER_DELAY)
+                }
+            }
+        }, TIMER_DELAY)
+    }
+    private fun setTime() {
+        trackTimer.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+    }
+    private fun playBackControl() {
+        when (playerState) {
+            STATE_PLAYING -> {
+                pausePlayer()
+            }
+            STATE_PREPARED, STATE_PAUSED -> {
+                startPlayer()
+            }
+        }
+    }
+    private fun startPlayer() {
+        mediaPlayer.start()
+        playerState = STATE_PLAYING
+        playButton.setImageResource(R.drawable.media_lib_pause_button)
+        updateTime()
+    }
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+    private fun pausePlayer() {
+        mediaPlayer.pause()
+        playerState = STATE_PAUSED
+        playButton.setImageResource(R.drawable.media_lib_play_button)
+        playButton.visibility = View.VISIBLE
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer.release()
+        playerHandler.removeCallbacks(playerRunnable)
     }
 }
