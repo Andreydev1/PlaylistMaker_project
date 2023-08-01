@@ -53,6 +53,16 @@
             android:visibility="gone" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="@dimen/progress_bar_dimens"
+        android:layout_height="@dimen/progress_bar_dimens"
+        android:layout_gravity="center"
+        android:backgroundTint="?attr/colorOnSecondary"
+        android:layout_marginTop="150dp"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTracks"
         android:layout_width="match_parent"
@@ -150,6 +160,5 @@
                 android:textSize="14sp"
                 app:cornerRadius="54dp"
                 android:textStyle="normal"/>
-
         </LinearLayout>
 </LinearLayout>

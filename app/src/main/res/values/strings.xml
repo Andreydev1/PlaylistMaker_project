@@ -53,6 +53,7 @@
     <string name="rock">Rock</string>
     <string name="yesterday_remastered_2009">Yesterday (Remastered 2009)</string>
     <string name="the_beatles">The Beatles</string>
+    <string name="timer_update_to_zero">00:00</string>
 
 
 </resources>
