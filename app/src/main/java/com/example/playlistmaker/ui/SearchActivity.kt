@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui
 
 
 import android.content.Intent
@@ -19,6 +19,10 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.*
+import com.example.playlistmaker.data.TrackDto
+import com.example.playlistmaker.domain.TrackSearchingCallBack
+import com.example.playlistmaker.domain.models.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,15 +56,13 @@ class SearchActivity : AppCompatActivity() {
 
     private val trackAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
+    private val tracks = ArrayList<Track>()
     private var inputText = ""
-    private val itunesBaseUrl = ("https://itunes.apple.com")
-    private val itunesRetrofit =
-        Retrofit.Builder().baseUrl(itunesBaseUrl).addConverterFactory(GsonConverterFactory.create())
-            .build()
-    private val itunesService = itunesRetrofit.create(ItunesApi::class.java)
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private val searchRunnable = Runnable { findTracks() }
+    private val trackRepository = App.instance.getTrackRepository()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -148,35 +150,27 @@ class SearchActivity : AppCompatActivity() {
         searchHistoryRv.adapter = historyAdapter
     }
     private fun findTracks() {
-        if (inputSearch.text.isNotEmpty()) {
-            searchHistoryLayout.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
+        if (inputSearch.text.isNotEmpty()) return
+        progressBar.visibility = View.VISIBLE
+        trackRepository.findTracks(inputSearch.text.toString(), object : TrackSearchingCallBack{
+            override fun onSuccess(tracksDto: ArrayList<TrackDto>) {
+               progressBar.visibility = View.GONE
 
-            itunesService.search(inputSearch.text.toString())
-                .enqueue(object : Callback<TrackResponse> {
-                    override fun onResponse(
-                        call: Call<TrackResponse>, response: Response<TrackResponse>
-                    ) {
-                        progressBar.visibility = View.GONE
-                        if (response.code() == 200) {
-                            val trackResults = response.body()?.results
-                            if (!trackResults.isNullOrEmpty()) {
-                                runOnUiThread {
-                                    trackAdapter.setTracks(trackResults)
-                                }
-                                onSearchResult(SearchStatus.SUCCESS)
-                            } else {
-                                trackAdapter.setTracks(emptyList())
-                                onSearchResult(SearchStatus.NOTHING_FOUND)
-                            }
-                        }
-                    }
-                    override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                        progressBar.visibility = View.GONE
-                        onSearchResult(SearchStatus.NO_INTERNET)
-                    }
-                })
-        }
+                tracks.clear()
+                tracksDto.forEach{
+                    tracks.add(convertTrackDto(it))
+                }
+                if (tracks.isEmpty()) onSearchResult(SearchStatus.NOTHING_FOUND)
+                else onSearchResult(SearchStatus.SUCCESS)
+            }
+
+            override fun onFailure() {
+               progressBar.visibility = View.GONE
+                onSearchResult(SearchStatus.NO_INTERNET)
+            }
+
+        })
+
     }
     private fun onSearchResult(resultStatus: SearchStatus) {
         when (resultStatus) {
@@ -230,4 +224,14 @@ class SearchActivity : AppCompatActivity() {
         }
         return current
     }
+    fun convertTrackDto(trackDto: TrackDto) = Track(
+    trackName = trackDto.trackName,
+    artistName = trackDto.artistName,
+    trackTime = trackDto.trackTime,
+    artworkUrl100 = trackDto.artworkUrl100,
+    collectionName = trackDto.collectionName,
+    releaseDate = trackDto.releaseDate,
+    primaryGenreName = trackDto.primaryGenreName,
+    country = trackDto.country,
+    previewUrl = trackDto.previewUrl)
 }

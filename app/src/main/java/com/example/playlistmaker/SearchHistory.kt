@@ -3,11 +3,12 @@ package com.example.playlistmaker
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
-const val SEARCH_HISTORY_SIZE = 10
-const val SEARCH_HISTORY = "search_history"
 
 class SearchHistory(private val sharedPrefs: SharedPreferences) {
+
+
     var trackList: MutableList<Track> = get().toMutableList()
 
     private fun get(): Array<Track> {
@@ -33,4 +34,8 @@ class SearchHistory(private val sharedPrefs: SharedPreferences) {
                 .remove(SEARCH_HISTORY)
                 .apply()
         }
+    companion object{
+        const val SEARCH_HISTORY_SIZE = 10
+        const val SEARCH_HISTORY = "search_history"
+    }
     }
