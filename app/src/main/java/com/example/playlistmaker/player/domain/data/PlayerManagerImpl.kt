@@ -1,41 +1,43 @@
-package com.example.playlistmaker.player.data
+package com.example.playlistmaker.player.domain.data
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.player.domain.PlayerManager
 import com.example.playlistmaker.domain.models.PlayerState
 
-class PlayerManagerImpl : PlayerManager {
+class PlayerManagerImpl: PlayerManager {
     private var mediaPlayer = MediaPlayer()
-    private var playerState = PlayerState.DEFAULT
-    private var playerStateCallBack: ((PlayerState) -> Unit)? = null
+    private var state = PlayerState.DEFAULT
+    private var stateCallback: ((PlayerState) -> Unit)? = null
 
     override fun prepare(previewUrl: String) {
+        mediaPlayer = MediaPlayer()
         mediaPlayer.setDataSource(previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            playerState = PlayerState.PREPARED
+            updateState(PlayerState.PREPARED)
         }
         mediaPlayer.setOnCompletionListener {
-            updatePlayerState(PlayerState.PREPARED)
+            updateState(PlayerState.PREPARED)
         }
     }
 
     override fun start() {
-       mediaPlayer.start()
-       updatePlayerState(PlayerState.PLAYING)
+        mediaPlayer.start()
+        updateState(PlayerState.PLAYING)
     }
 
     override fun pause() {
         mediaPlayer.pause()
-        updatePlayerState(PlayerState.PAUSED)
+        updateState(PlayerState.PAUSED)
     }
 
     override fun release() {
         mediaPlayer.release()
+        updateState(PlayerState.DEFAULT)
     }
 
     override fun setStateCallback(callback: (PlayerState) -> Unit) {
-        playerStateCallBack = callback
+        stateCallback = callback
     }
 
     override fun getCurrentTime(): Int {
@@ -43,11 +45,12 @@ class PlayerManagerImpl : PlayerManager {
     }
 
     override fun getState(): PlayerState {
-        return playerState
+        return state
     }
 
-    private fun updatePlayerState(currentState: PlayerState){
-        playerState = currentState
-        playerStateCallBack?.invoke(playerState)
+    private fun updateState(newState: PlayerState) {
+        state = newState
+        stateCallback?.invoke(state)
     }
+
 }

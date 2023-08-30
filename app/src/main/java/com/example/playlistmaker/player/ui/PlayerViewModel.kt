@@ -38,7 +38,7 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
     private val timeRunnable = Runnable { startUpdateTime() }
 
     init {
-        playerManager.setStateCallback { playerState: PlayerState ->
+        playerManager.setStateCallback { playerState ->
             when (playerState) {
                 PlayerState.PREPARED -> {
                     handler.removeCallbacks(timeRunnable)
@@ -85,7 +85,7 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
                 playerManager.start()
                 renderState(TrackPlayerState.Playing)
             }
-            else -> {}
+            else -> Unit
         }
     }
 
@@ -108,11 +108,7 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun updateCurrentTime() {
-        currentTimeLiveData.postValue(
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(
-                playerManager.getCurrentTime()
-            )
-        )
+        currentTimeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerManager.getCurrentTime()))
     }
 
     override fun onCleared() {

@@ -27,7 +27,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .load(model.artworkUrl100)
             .centerCrop()
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_rounded_corners)))
-            .placeholder(R.drawable.ic_no_internet_track)
+            .placeholder(R.drawable.media_lib_cover_placeholder)
             .into(artworkUrl100)
 
     }

@@ -1,9 +1,8 @@
 package com.example.playlistmaker.player.ui
 
-
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -12,7 +11,7 @@ import com.example.playlistmaker.databinding.ActivityPlayerBinding
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.player.domain.models.TrackPlayerState
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
@@ -54,16 +53,16 @@ class PlayerActivity : AppCompatActivity() {
     private fun setTrackInfo(track: Track) {
         binding.playerTrackName.text = track.trackName
         binding.playerArtistName.text = track.artistName
-        binding.playerTimer.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toInt())
-        binding.playerTrackAlbum.text = track.collectionName
-        binding.playerTrackYear.text = track.releaseDate.substring(0,4)
-        binding.playerTrackGenre.text = track.primaryGenreName
-        binding.playerTrackCountry.text = track.country
+        binding.playerTrackDurationData.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toInt())
+        binding.playerTrackAlbumData.text = track.collectionName
+        binding.playerTrackYearData.text = track.releaseDate.substring(0,4)
+        binding.playerTrackGenreData.text = track.primaryGenreName
+        binding.playerTrackCountryData.text = track.country
         Glide.with(applicationContext)
             .load(track.getCoverArtWork())
             .centerCrop()
             .transform(RoundedCorners(8))
-            .placeholder(R.drawable.ic_no_internet)
+            .placeholder(R.drawable.media_lib_cover_placeholder)
             .into(binding.playerAlbumCover)
 
         setAlbumGroupVisibility(track.collectionName != "")
@@ -80,7 +79,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun setAlbumGroupVisibility(visible: Boolean) {
-        binding.playerTrackAlbum.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.playerTrackAlbumData.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun render(state: TrackPlayerState) {

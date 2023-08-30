@@ -1,5 +1,6 @@
 package com.example.playlistmaker.domain.models
 
+
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 

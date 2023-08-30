@@ -2,24 +2,23 @@ package com.example.playlistmaker.creator
 
 import android.content.Context
 import com.example.playlistmaker.App
+import com.example.playlistmaker.sharing.domain.ExternalNavigator
 import com.example.playlistmaker.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.player.data.PlayerManagerImpl
+import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
 import com.example.playlistmaker.player.domain.PlayerManager
 import com.example.playlistmaker.search.domain.api.TracksInteractor
+import com.example.playlistmaker.search.data.TracksInteractorImpl
 import com.example.playlistmaker.search.domain.api.TracksRepository
-import com.example.playlistmaker.search.domain.impl.TracksInteractorImpl
-import com.example.playlistmaker.search.domain.impl.TracksRepositoryImpl
-import com.example.playlistmaker.settings.data.SettingsRepository
-import com.example.playlistmaker.settings.data.impl.SettingsRepositoryImpl
+import com.example.playlistmaker.search.data.TracksRepositoryImpl
+import com.example.playlistmaker.player.domain.data.PlayerManagerImpl
+import com.example.playlistmaker.settings.domain.SettingsRepository
+import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.domain.SettingsInteractor
-import com.example.playlistmaker.settings.domain.impl.SettingsInteractorImpl
-import com.example.playlistmaker.sharing.data.ExternalNavigator
-import com.example.playlistmaker.sharing.data.SharingRepository
-import com.example.playlistmaker.sharing.data.impl.ExternalNavigatorImpl
+import com.example.playlistmaker.settings.data.SettingsInteractorImpl
+import com.example.playlistmaker.sharing.domain.SharingRepository
 import com.example.playlistmaker.sharing.data.impl.SharingRepositoryImpl
-import com.example.playlistmaker.sharing.domain.model.SharingInteractor
-import com.example.playlistmaker.sharing.domain.impl.SharingInteractorImpl
-
+import com.example.playlistmaker.sharing.domain.SharingInteractor
+import com.example.playlistmaker.sharing.data.SharingInteractorImpl
 
 object Creator {
     private fun getTracksRepository(context: Context): TracksRepository {
@@ -46,12 +45,11 @@ object Creator {
         return SettingsInteractorImpl(getSettingsRepository())
     }
 
-    fun provideSharingInteractor(context: Context): SharingInteractor {
-        return SharingInteractorImpl(provideExternalNavigator(context), getSharingRepository(context))
+    fun provideSharingInteractor(context: Context, navigator: ExternalNavigator): SharingInteractor {
+        return SharingInteractorImpl(navigator, getSharingRepository(context), context)
     }
 
-    private fun provideExternalNavigator(context: Context): ExternalNavigator {
+    private fun provideExternalNavigator(context: Context): ExternalNavigatorImpl {
         return ExternalNavigatorImpl(context)
     }
-
 }

@@ -8,24 +8,29 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.App
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.TracksSearchState
 
-class TracksSearchViewModel(application: Application): AndroidViewModel(application) {
-    private val tracksInteractor = Creator.provideTracksInteractor(getApplication<Application>())
 
+class TracksSearchViewModel(
+    application: Application
+) : AndroidViewModel(application) {
+    private val tracksInteractor = Creator.provideTracksInteractor(getApplication<Application>())
+    private var isClickAllowed = true
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                TracksSearchViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
+                TracksSearchViewModel(this[APPLICATION_KEY] as Application)
             }
         }
     }
@@ -123,4 +128,22 @@ class TracksSearchViewModel(application: Application): AndroidViewModel(applicat
     private fun renderState(state: TracksSearchState) {
         stateLiveData.postValue(state)
     }
+    fun setClickAllowed(allowed: Boolean) {
+        isClickAllowed = allowed
+    }
+
+    fun isClickAllowed(): Boolean {
+        return isClickAllowed
+    }
+
+    fun handleButtonClick(clickDelay: Long, action: () -> Unit) {
+        if (isClickAllowed()) {
+            setClickAllowed(false)
+            Handler(Looper.getMainLooper()).postDelayed({
+                setClickAllowed(true)
+            }, clickDelay)
+            action.invoke()
+        }
+    }
+
 }

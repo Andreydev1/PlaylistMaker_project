@@ -1,4 +1,4 @@
-package com.example.playlistmaker.search.domain.impl
+package com.example.playlistmaker.search.data
 
 
 import com.example.playlistmaker.creator.Resource
@@ -20,8 +20,7 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
             }
             200 -> {
                 Resource.Success((response as TracksSearchResponse).results.map {
-                    convertTrackDto(it)
-                })
+                    convertTrackDto(it)})
             }
             else -> {
                 Resource.Error("Ошибка сервера")
@@ -42,4 +41,3 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
     )
 
 }
-

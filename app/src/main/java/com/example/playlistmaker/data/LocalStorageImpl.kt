@@ -2,15 +2,16 @@ package com.example.playlistmaker.data
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.SEARCH_HISTORY
+import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.THEME_SWITCHER
+import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.LocalStorage
 import com.example.playlistmaker.domain.models.Theme
 import com.example.playlistmaker.domain.models.ThemeSettings
-import com.example.playlistmaker.search.ui.SearchHistory
-import com.example.playlistmaker.domain.models.Track
 import com.google.gson.Gson
 
 class LocalStorageImpl(val sharedPrefs: SharedPreferences, val gson: Gson): LocalStorage {
+
     override fun removeTrackHistory() {
         sharedPrefs.edit()
             .remove(SEARCH_HISTORY)

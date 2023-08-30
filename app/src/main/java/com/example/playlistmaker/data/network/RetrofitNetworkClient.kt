@@ -10,7 +10,7 @@ import com.example.playlistmaker.data.dto.TracksSearchRequest
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RetrofitNetworkClient(private val context: Context): NetworkClient {
+class RetrofitNetworkClient(private val context: Context) : NetworkClient {
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -20,33 +20,28 @@ class RetrofitNetworkClient(private val context: Context): NetworkClient {
     private val iTunesService = retrofit.create(ItunesSearchApi::class.java)
 
     override fun doRequest(dto: Any): Response {
-        if (isConnected() == false) {
+        if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
         if (dto !is TracksSearchRequest) {
             return Response().apply { resultCode = 400 }
         }
 
-        try {
+        return try {
             val resp = iTunesService.search(dto.expression).execute()
-            val body = resp.body() ?: Response()
-            return if (body != null) {
-                body.apply { resultCode = resp.code() }
-            } else {
-                Response().apply { resultCode = resp.code() }
-            }
+            val body = resp.body()
+            body?.apply { resultCode = resp.code() } ?: Response().apply { resultCode = resp.code() }
         } catch (e: Exception) {
-            return Response().apply { resultCode = -1 }
+            Response().apply { resultCode = -1 }
         }
     }
 
     private fun isConnected(): Boolean {
-        val connectivityManager = context.getSystemService(
-            Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val capabilities = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
         } else {
-            TODO("VERSION.SDK_INT < M")
+            return false
         }
         if (capabilities != null) {
             when {

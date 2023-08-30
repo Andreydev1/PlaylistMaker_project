@@ -1,9 +1,7 @@
 package com.example.playlistmaker.search.ui
 
-
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,14 +10,14 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.*
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.models.TracksSearchState
-
 
 class SearchActivity : AppCompatActivity() {
     companion object {
@@ -33,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
     private val trackAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
 
-    private var isClickAllowed = true
+
     private val handler = Handler(Looper.getMainLooper())
 
     private lateinit var inputTextWatcher: TextWatcher
@@ -76,9 +74,11 @@ class SearchActivity : AppCompatActivity() {
             binding.etSearch.setText("")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY){
+                trackAdapter.tracks.clear()
+                viewModel.clearSearchingText()
+            }
 
-            trackAdapter.tracks.clear()
-            viewModel.clearSearchingText()
         }
 
         binding.searchRefreshButton.setOnClickListener {
@@ -124,13 +124,13 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter.onItemClick = { track ->
             viewModel.addTrackToHistory(track)
             historyAdapter.notifyDataSetChanged()
-            if (clickDebounce()) {
+            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY) {
                 openPlayer(track)
             }
         }
 
         historyAdapter.onItemClick = { track ->
-            if (clickDebounce()) {
+            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY) {
                 openPlayer(track)
             }
         }
@@ -175,7 +175,7 @@ class SearchActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.GONE
         binding.searchSomethingWentWrong.visibility = View.GONE
         binding.searchHistoryLayout.visibility = View.GONE
-        binding.rvTracksHistory.visibility = View.VISIBLE
+        binding.rvTracks.visibility = View.VISIBLE
 
         trackAdapter.tracks.clear()
         trackAdapter.tracks.addAll(tracks)
@@ -206,7 +206,7 @@ class SearchActivity : AppCompatActivity() {
     private fun showHistory() {
         binding.progressBar.visibility = View.GONE
         binding.searchSomethingWentWrong.visibility = View.GONE
-        binding.rvTracksHistory.visibility = View.GONE
+        binding.rvTracks.visibility = View.GONE
         binding.searchHistoryLayout.visibility = if (viewModel.isHistoryEmpty()) View.GONE else View.VISIBLE
     }
 
@@ -214,16 +214,5 @@ class SearchActivity : AppCompatActivity() {
         val player = Intent(this, PlayerActivity::class.java)
         player.putExtra("track", track)
         startActivity(player)
-    }
-
-    private fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true },
-                CLICK_DEBOUNCE_DELAY
-            )
-        }
-        return current
     }
 }
