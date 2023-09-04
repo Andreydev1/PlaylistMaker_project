@@ -20,7 +20,8 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient) : TracksRep
             }
             200 -> {
                 Resource.Success((response as TracksSearchResponse).results.map {
-                    convertTrackDto(it)})
+                    convertTrackDto(it)
+                })
             }
             else -> {
                 Resource.Error("Ошибка сервера")

@@ -2,7 +2,7 @@ package com.example.playlistmaker.data
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.SEARCH_HISTORY
-import com.example.playlistmaker.search.data.SearchHistory
+import com.example.playlistmaker.search.domain.SearchHistory
 import com.example.playlistmaker.THEME_SWITCHER
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.domain.LocalStorage

@@ -12,6 +12,7 @@ class ExternalNavigatorImpl(val context: Context) : ExternalNavigator {
         intent.type = "text/plain"
         intent.putExtra(Intent.EXTRA_TEXT, shareAppLink)
         val chooserIntent = Intent.createChooser(intent, "Share with:")
+        chooserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         context.startActivity(chooserIntent)
     }
 
@@ -19,6 +20,7 @@ class ExternalNavigatorImpl(val context: Context) : ExternalNavigator {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = Uri.parse(termsLink)
         val chooserIntent = Intent.createChooser(intent, "Open in:")
+        chooserIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         context.startActivity(chooserIntent)
     }
 
@@ -28,7 +30,7 @@ class ExternalNavigatorImpl(val context: Context) : ExternalNavigator {
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(supportEmailData.email))
         intent.putExtra(Intent.EXTRA_SUBJECT, supportEmailData.subject)
         intent.putExtra(Intent.EXTRA_TEXT, supportEmailData.text)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         context.startActivity(intent)
     }
 }

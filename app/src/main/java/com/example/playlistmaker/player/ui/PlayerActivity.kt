@@ -25,7 +25,10 @@ class PlayerActivity : AppCompatActivity() {
 
         val currentTrack = intent.getSerializableExtra("track") as Track
 
-        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            PlayerViewModel.getViewModelFactory()
+        )[PlayerViewModel::class.java]
         viewModel.preparePlayer(currentTrack.previewUrl)
 
         setTrackInfo(currentTrack)
@@ -53,15 +56,16 @@ class PlayerActivity : AppCompatActivity() {
     private fun setTrackInfo(track: Track) {
         binding.playerTrackName.text = track.trackName
         binding.playerArtistName.text = track.artistName
-        binding.playerTrackDurationData.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toInt())
+        binding.playerTrackDurationData.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toInt())
         binding.playerTrackAlbumData.text = track.collectionName
-        binding.playerTrackYearData.text = track.releaseDate.substring(0,4)
+        binding.playerTrackYearData.text = track.releaseDate.substring(0, 4)
         binding.playerTrackGenreData.text = track.primaryGenreName
         binding.playerTrackCountryData.text = track.country
         Glide.with(applicationContext)
             .load(track.getCoverArtWork())
             .centerCrop()
-            .transform(RoundedCorners(8))
+            .transform((RoundedCorners(resources.getDimensionPixelSize(R.dimen.player_rounded_corners))))
             .placeholder(R.drawable.media_lib_cover_placeholder)
             .into(binding.playerAlbumCover)
 

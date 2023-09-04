@@ -1,10 +1,10 @@
-package com.example.playlistmaker.player.domain.data
+package com.example.playlistmaker.player.domain.impl
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.player.domain.PlayerManager
 import com.example.playlistmaker.domain.models.PlayerState
 
-class PlayerManagerImpl: PlayerManager {
+class PlayerManagerImpl : PlayerManager {
     private var mediaPlayer = MediaPlayer()
     private var state = PlayerState.DEFAULT
     private var stateCallback: ((PlayerState) -> Unit)? = null

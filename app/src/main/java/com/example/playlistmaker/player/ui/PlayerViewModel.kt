@@ -15,7 +15,7 @@ import com.example.playlistmaker.player.domain.models.TrackPlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PlayerViewModel(application: Application): AndroidViewModel(application) {
+class PlayerViewModel(application: Application) : AndroidViewModel(application) {
     private val playerManager = Creator.providePlayerManager()
 
     companion object {
@@ -108,7 +108,11 @@ class PlayerViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun updateCurrentTime() {
-        currentTimeLiveData.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerManager.getCurrentTime()))
+        currentTimeLiveData.postValue(
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(
+                playerManager.getCurrentTime()
+            )
+        )
     }
 
     override fun onCleared() {

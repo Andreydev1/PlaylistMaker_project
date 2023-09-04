@@ -1,48 +1,31 @@
 package com.example.playlistmaker.settings.ui
 
-import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.sharing.domain.ExternalNavigator
+import com.example.playlistmaker.App
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Theme
 import com.example.playlistmaker.domain.models.ThemeSettings
-import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
+import com.example.playlistmaker.settings.domain.SettingsInteractor
+import com.example.playlistmaker.sharing.domain.SharingInteractor
 
 
-class SettingsViewModel(application: Application) : AndroidViewModel(application) {
+class SettingsViewModel(private val application: App,
+                        private val sharingInteractor: SharingInteractor,
+                        private val settingsInteractor: SettingsInteractor) : AndroidViewModel(application) {
 
-        private val navigator: ExternalNavigatorImpl = ExternalNavigatorImpl(application)
-        private val sharingInteractor = Creator.provideSharingInteractor(application, navigator)
-        private val settingsInteractor = Creator.provideSettingsInteractor(getApplication<Application>())
-
-
-        companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-            }
-        }
+    fun shareApp() {
+        sharingInteractor.shareApp()
     }
 
-    fun shareApp(navigator: ExternalNavigator) {
-        sharingInteractor.shareApp {
-            navigator.navigateToShare(it)
-        }
+    fun openTerms() {
+        sharingInteractor.openTerms()
     }
 
-    fun openTerms(navigator: ExternalNavigator) {
-        sharingInteractor.openTerms {
-            navigator.navigateToOpenLink(it)
-        }
-    }
-
-    fun openSupport(navigator: ExternalNavigator) {
-        sharingInteractor.openSupport {
-            navigator.navigateToEmail(it)
-        }
+    fun openSupport() {
+        sharingInteractor.openSupport()
     }
 
     private fun getThemeSettings(): ThemeSettings {
@@ -55,5 +38,17 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     fun isNightModeChecked(): Boolean {
         return getThemeSettings().theme == Theme.DARK
+    }
+    companion object {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as App
+                val sharingInteractor =
+                    Creator.provideSharingInteractor(application.applicationContext)
+                val settingsInteractor =
+                    Creator.provideSettingsInteractor(application.applicationContext)
+                SettingsViewModel(application, sharingInteractor, settingsInteractor)
+            }
+        }
     }
 }

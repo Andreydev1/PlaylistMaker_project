@@ -14,7 +14,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.App
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.models.Track
-import com.example.playlistmaker.search.data.SearchHistory
+import com.example.playlistmaker.search.domain.SearchHistory
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.models.TracksSearchState
 
@@ -24,6 +24,7 @@ class TracksSearchViewModel(
 ) : AndroidViewModel(application) {
     private val tracksInteractor = Creator.provideTracksInteractor(getApplication<Application>())
     private var isClickAllowed = true
+
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private val SEARCH_REQUEST_TOKEN = Any()
@@ -128,6 +129,7 @@ class TracksSearchViewModel(
     private fun renderState(state: TracksSearchState) {
         stateLiveData.postValue(state)
     }
+
     fun setClickAllowed(allowed: Boolean) {
         isClickAllowed = allowed
     }

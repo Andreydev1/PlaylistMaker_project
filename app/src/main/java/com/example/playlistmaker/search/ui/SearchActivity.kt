@@ -3,8 +3,6 @@ package com.example.playlistmaker.search.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -32,8 +30,6 @@ class SearchActivity : AppCompatActivity() {
     private val historyAdapter = TrackAdapter()
 
 
-    private val handler = Handler(Looper.getMainLooper())
-
     private lateinit var inputTextWatcher: TextWatcher
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +38,10 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, TracksSearchViewModel.getViewModelFactory())[TracksSearchViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            TracksSearchViewModel.getViewModelFactory()
+        )[TracksSearchViewModel::class.java]
         viewModel.onCreate()
 
         setListeners()
@@ -72,9 +71,10 @@ class SearchActivity : AppCompatActivity() {
 
         binding.ivSearchClear.setOnClickListener {
             binding.etSearch.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
-            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY){
+            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY) {
                 trackAdapter.tracks.clear()
                 viewModel.clearSearchingText()
             }
@@ -92,13 +92,13 @@ class SearchActivity : AppCompatActivity() {
 
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
 
                 viewModel.startSearch()
                 true
-            }
-            else false
+            } else false
         }
 
         inputTextWatcher = object : TextWatcher {
@@ -135,15 +135,18 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        binding.rvTracks.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvTracks.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvTracks.adapter = trackAdapter
 
-        binding.rvTracksHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvTracksHistory.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvTracksHistory.adapter = historyAdapter
         historyAdapter.tracks = viewModel.getHistoryList()
     }
 
-    private fun clearButtonVisibility(s: CharSequence?) = if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
+    private fun clearButtonVisibility(s: CharSequence?) =
+        if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -207,7 +210,8 @@ class SearchActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.GONE
         binding.searchSomethingWentWrong.visibility = View.GONE
         binding.rvTracks.visibility = View.GONE
-        binding.searchHistoryLayout.visibility = if (viewModel.isHistoryEmpty()) View.GONE else View.VISIBLE
+        binding.searchHistoryLayout.visibility =
+            if (viewModel.isHistoryEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun openPlayer(track: Track) {
