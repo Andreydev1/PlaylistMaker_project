@@ -1,4 +1,4 @@
-package com.example.playlistmaker.sharing.data
+package com.example.playlistmaker.sharing.ui
 
 import android.content.Context
 import android.content.Intent

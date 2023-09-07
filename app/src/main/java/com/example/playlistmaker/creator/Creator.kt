@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.playlistmaker.App
 import com.example.playlistmaker.sharing.domain.ExternalNavigator
 import com.example.playlistmaker.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
+import com.example.playlistmaker.sharing.ui.ExternalNavigatorImpl
 import com.example.playlistmaker.player.domain.PlayerManager
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.impl.TracksInteractorImpl
