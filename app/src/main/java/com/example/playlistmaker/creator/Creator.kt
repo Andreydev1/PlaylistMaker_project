@@ -10,7 +10,7 @@ import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.impl.TracksInteractorImpl
 import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.search.data.TracksRepositoryImpl
-import com.example.playlistmaker.player.domain.impl.PlayerManagerImpl
+import com.example.playlistmaker.data.PlayerManagerImpl
 import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.domain.SettingsInteractor
