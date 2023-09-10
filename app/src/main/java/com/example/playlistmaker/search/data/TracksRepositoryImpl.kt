@@ -1,7 +1,7 @@
 package com.example.playlistmaker.search.data
 
 
-import com.example.playlistmaker.creator.Resource
+import com.example.playlistmaker.Resource
 import com.example.playlistmaker.data.NetworkClient
 import com.example.playlistmaker.data.dto.TrackDto
 import com.example.playlistmaker.data.dto.TracksSearchRequest

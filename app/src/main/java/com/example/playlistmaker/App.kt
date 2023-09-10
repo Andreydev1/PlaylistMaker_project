@@ -3,15 +3,18 @@ package com.example.playlistmaker
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.data.LocalStorageImpl
+import com.example.playlistmaker.di.dataModule
+import com.example.playlistmaker.di.interactorModule
+import com.example.playlistmaker.di.repositoryModule
+import com.example.playlistmaker.di.viewModelModule
 import com.example.playlistmaker.domain.LocalStorage
 import com.google.gson.Gson
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 
 class App : Application() {
     private var darkTheme = false
-
-    private lateinit var localStorage: LocalStorageImpl
-    private var gson = Gson()
 
     override fun onCreate() {
         super.onCreate()
@@ -21,7 +24,10 @@ class App : Application() {
         darkTheme = sharedPrefs.getBoolean(THEME_SWITCHER, false)
         switchTheme(darkTheme)
 
-        localStorage = LocalStorageImpl(sharedPrefs, gson)
+        startKoin {
+            androidContext(this@App)
+            modules(dataModule, repositoryModule, interactorModule, viewModelModule)
+        }
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {
@@ -33,10 +39,6 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-    }
-
-    fun getLocalStorage(): LocalStorage {
-        return localStorage
     }
 
     companion object {
