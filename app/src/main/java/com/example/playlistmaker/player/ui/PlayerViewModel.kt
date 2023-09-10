@@ -1,14 +1,10 @@
 package com.example.playlistmaker.player.ui
 
-import android.app.Application
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.domain.models.PlayerState
 import com.example.playlistmaker.player.domain.PlayerManager
 import com.example.playlistmaker.player.domain.models.TrackPlayerState

@@ -3,7 +3,6 @@ package com.example.playlistmaker.settings.ui
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.App
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.domain.models.Theme
