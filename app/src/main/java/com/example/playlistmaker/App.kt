@@ -2,26 +2,45 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.data.LocalStorageImpl
+import com.example.playlistmaker.domain.LocalStorage
+import com.google.gson.Gson
 
-const val PLAYLIST_MAKER_PREFS = "playlist_maker_prefs"
-const val DARK_THEME_PREFS = "dark_theme_prefs"
-class App: Application() {
-    var darkTheme = false
+
+class App : Application() {
+    private var darkTheme = false
+
+    private lateinit var localStorage: LocalStorageImpl
+    private var gson = Gson()
+
     override fun onCreate() {
         super.onCreate()
-        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFS, MODE_PRIVATE)
-        darkTheme = sharedPrefs.getBoolean(DARK_THEME_PREFS, false)
-        darkThemeSwitch(darkTheme)
+        instance = this
+
+        val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
+        darkTheme = sharedPrefs.getBoolean(THEME_SWITCHER, false)
+        switchTheme(darkTheme)
+
+        localStorage = LocalStorageImpl(sharedPrefs, gson)
     }
 
-    fun darkThemeSwitch(darkThemeEnabled: Boolean){
+    fun switchTheme(darkThemeEnabled: Boolean) {
         darkTheme = darkThemeEnabled
         AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled){
+            if (darkThemeEnabled) {
                 AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
             }
-        else AppCompatDelegate.MODE_NIGHT_NO
         )
+    }
 
+    fun getLocalStorage(): LocalStorage {
+        return localStorage
+    }
+
+    companion object {
+        lateinit var instance: App
+            private set
     }
 }
