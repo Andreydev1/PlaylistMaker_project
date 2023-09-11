@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.search.domain.Track
 
 class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
     internal var tracks = mutableListOf<Track>()

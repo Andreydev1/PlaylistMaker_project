@@ -5,8 +5,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker.App
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
-import com.example.playlistmaker.domain.models.Theme
-import com.example.playlistmaker.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.domain.models.Theme
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
+import com.example.playlistmaker.settings.view_model.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

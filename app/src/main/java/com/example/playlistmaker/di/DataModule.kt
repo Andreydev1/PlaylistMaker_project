@@ -1,11 +1,12 @@
 package com.example.playlistmaker.di
 
 import android.content.Context.MODE_PRIVATE
-import com.example.playlistmaker.data.NetworkClient
-import com.example.playlistmaker.data.PlayerManagerImpl
-import com.example.playlistmaker.data.network.ItunesSearchApi
-import com.example.playlistmaker.data.network.RetrofitNetworkClient
-import com.example.playlistmaker.player.domain.PlayerManager
+import android.media.MediaPlayer
+import com.example.playlistmaker.search.data.NetworkClient
+import com.example.playlistmaker.player.data.PlayerImpl
+import com.example.playlistmaker.search.data.network.ItunesSearchApi
+import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
+import com.example.playlistmaker.player.domain.api.Player
 import com.example.playlistmaker.search.domain.SearchHistory
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -14,8 +15,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val dataModule = module {
-    single<PlayerManager> {
-        PlayerManagerImpl()
+    single<Player> {
+        PlayerImpl(MediaPlayer())
     }
 
     single<ItunesSearchApi> {

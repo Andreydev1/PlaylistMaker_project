@@ -2,13 +2,10 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.data.LocalStorageImpl
 import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.interactorModule
 import com.example.playlistmaker.di.repositoryModule
 import com.example.playlistmaker.di.viewModelModule
-import com.example.playlistmaker.domain.LocalStorage
-import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

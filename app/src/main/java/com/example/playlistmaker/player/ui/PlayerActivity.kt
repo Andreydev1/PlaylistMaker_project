@@ -7,8 +7,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.player.domain.models.TrackPlayerState
+import com.example.playlistmaker.player.view_model.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -100,7 +101,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun showPrepared() {
-        binding.playerTimer.text = "00:00"
+        binding.playerTimer.text = getString(R.string.timer_update_to_zero)
         binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
     }
 
