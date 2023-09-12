@@ -3,19 +3,20 @@ package com.example.playlistmaker.player.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.player.domain.models.TrackPlayerState
+import com.example.playlistmaker.player.view_model.PlayerViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel by viewModel<PlayerViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +26,6 @@ class PlayerActivity : AppCompatActivity() {
 
         val currentTrack = intent.getSerializableExtra("track") as Track
 
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModel.getViewModelFactory()
-        )[PlayerViewModel::class.java]
         viewModel.preparePlayer(currentTrack.previewUrl)
 
         setTrackInfo(currentTrack)
@@ -104,7 +101,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun showPrepared() {
-        binding.playerTimer.text = "00:00"
+        binding.playerTimer.text = getString(R.string.timer_update_to_zero)
         binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
     }
 
