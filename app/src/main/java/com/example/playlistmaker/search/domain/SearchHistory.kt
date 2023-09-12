@@ -2,7 +2,7 @@ package com.example.playlistmaker.search.domain
 
 import com.example.playlistmaker.search.data.LocalStorage
 
-class SearchHistory(val localStorage: LocalStorage) {
+class SearchHistory(private val localStorage: LocalStorage) {
     var tracksList: MutableList<Track> = get().toMutableList()
 
     fun get(): Array<Track> {

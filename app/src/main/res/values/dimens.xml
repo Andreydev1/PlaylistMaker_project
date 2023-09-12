@@ -38,6 +38,6 @@
     <dimen name="track_rounded_corners">2dp</dimen>
     <dimen name="player_rounded_corners">8dp</dimen>
     <dimen name="progress_bar_dimens">44dp</dimen>
-
-
+    <dimen name="library_text_size">19sp</dimen>
+    <dimen name="library_empty_icon_size">120sp</dimen>
 </resources>
