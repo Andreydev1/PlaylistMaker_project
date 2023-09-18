@@ -19,7 +19,7 @@
 
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/dark_theme_switcher"
+        android:id="@+id/darkThemeSwitcher"
         android:layout_width="match_parent"
         android:layout_height="61dp"
         android:gravity="left|center_vertical"
@@ -33,7 +33,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/dark_theme_text"
 
-         />
+        />
 
     <Button
         android:id="@+id/share_button"
