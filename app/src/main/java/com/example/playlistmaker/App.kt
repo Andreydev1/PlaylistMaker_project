@@ -17,7 +17,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
 
         val sharedPrefs = getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
         darkTheme = sharedPrefs.getBoolean(THEME_SWITCHER, false)
@@ -38,10 +37,5 @@ class App : Application() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
-    }
-
-    companion object {
-        lateinit var instance: App
-            private set
     }
 }

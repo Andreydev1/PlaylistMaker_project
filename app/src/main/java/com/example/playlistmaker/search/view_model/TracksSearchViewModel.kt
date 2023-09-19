@@ -6,8 +6,8 @@ import android.os.SystemClock
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.SearchHistory
+import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 
 

@@ -1,9 +1,10 @@
 package com.example.playlistmaker.search.domain.impl
 
-import com.example.playlistmaker.utils.Resource
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.api.TracksRepository
+import com.example.playlistmaker.utils.Resource
 import java.util.concurrent.Executors
+
 class TracksInteractorImpl(
     private val repository: TracksRepository,
    ) : TracksInteractor {
