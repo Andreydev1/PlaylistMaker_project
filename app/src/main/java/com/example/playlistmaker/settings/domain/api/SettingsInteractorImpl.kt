@@ -1,7 +1,7 @@
 package com.example.playlistmaker.settings.domain.api
 
-import com.example.playlistmaker.settings.domain.impl.SettingsInteractor
 import com.example.playlistmaker.settings.data.api.SettingsRepository
+import com.example.playlistmaker.settings.domain.impl.SettingsInteractor
 import com.example.playlistmaker.settings.domain.models.ThemeSettings
 
 class SettingsInteractorImpl(private val repository: SettingsRepository): SettingsInteractor {

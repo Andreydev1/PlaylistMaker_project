@@ -1,13 +1,13 @@
 package com.example.playlistmaker.search.data.localstorage
 
 import android.content.SharedPreferences
-import com.example.playlistmaker.SEARCH_HISTORY
-import com.example.playlistmaker.search.domain.SearchHistory
-import com.example.playlistmaker.THEME_SWITCHER
 import com.example.playlistmaker.search.data.LocalStorage
+import com.example.playlistmaker.search.domain.SearchHistory
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.settings.domain.models.Theme
 import com.example.playlistmaker.settings.domain.models.ThemeSettings
+import com.example.playlistmaker.utils.SEARCH_HISTORY
+import com.example.playlistmaker.utils.THEME_SWITCHER
 import com.google.gson.Gson
 
 class LocalStorageImpl(private val sharedPrefs: SharedPreferences, private val gson: Gson):

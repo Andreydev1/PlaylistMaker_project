@@ -1,9 +1,9 @@
 package com.example.playlistmaker.settings.view_model
 
 import androidx.lifecycle.ViewModel
+import com.example.playlistmaker.settings.domain.impl.SettingsInteractor
 import com.example.playlistmaker.settings.domain.models.Theme
 import com.example.playlistmaker.settings.domain.models.ThemeSettings
-import com.example.playlistmaker.settings.domain.impl.SettingsInteractor
 import com.example.playlistmaker.sharing.domain.api.SharingInteractor
 
 

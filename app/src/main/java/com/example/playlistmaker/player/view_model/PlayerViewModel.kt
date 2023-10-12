@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.api.Player
 import com.example.playlistmaker.player.domain.models.TrackPlayerState
 import java.text.SimpleDateFormat
-import java.util.Locale
+import java.util.*
 
 class PlayerViewModel(private val player: Player) : ViewModel() {
     companion object {

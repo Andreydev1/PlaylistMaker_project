@@ -1,7 +1,7 @@
 package com.example.playlistmaker.search.data
 
-import com.example.playlistmaker.settings.domain.models.ThemeSettings
 import com.example.playlistmaker.search.domain.Track
+import com.example.playlistmaker.settings.domain.models.ThemeSettings
 
 interface LocalStorage {
     fun removeTrackHistory()

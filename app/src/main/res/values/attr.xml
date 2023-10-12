@@ -9,4 +9,5 @@
     <attr name="search_color" format="reference"/>
     <attr name="search_icons_color" format="reference"/>
     <attr name="player_icon_color" format="reference"/>
+    <attr name="navigation_color" format="reference"/>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.utils
 
 
 const val PLAYLIST_MAKER_PREFERENCES = "playlist_maker_preferences"
