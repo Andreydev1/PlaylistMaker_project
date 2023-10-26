@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityPlayerBinding
-import com.example.playlistmaker.player.domain.models.TrackPlayerState
+import com.example.playlistmaker.player.domain.models.PlayerState
 import com.example.playlistmaker.player.view_model.PlayerViewModel
 import com.example.playlistmaker.search.domain.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,12 +31,14 @@ class PlayerActivity : AppCompatActivity() {
         setTrackInfo(currentTrack)
         setListeners()
 
-        viewModel.observeState().observe(this) {
-            render(it)
-        }
+        viewModel.observePlayerState().observe(this) {
+            binding.playerPlayButton.isEnabled = it.isPlayButtonEnabled
+            binding.playerTimer.text = it.progress
 
-        viewModel.observeCurrentTime().observe(this) {
-            updateTime(it)
+            when (it) {
+                is PlayerState.Playing -> binding.playerPlayButton.setImageResource(R.drawable.media_lib_pause_button)
+                else -> binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
+            }
         }
     }
 
@@ -46,7 +48,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
         binding.playerPlayButton.setOnClickListener {
-            viewModel.switchPlayPause()
+            viewModel.onPlayButtonClicked()
         }
     }
 
@@ -81,35 +83,5 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun setAlbumGroupVisibility(visible: Boolean) {
         binding.playerTrackAlbumData.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
-    private fun render(state: TrackPlayerState) {
-        when (state) {
-            is TrackPlayerState.Prepared -> showPrepared()
-            is TrackPlayerState.Playing -> showPlaying()
-            is TrackPlayerState.Paused -> showPaused()
-            is TrackPlayerState.Default -> showDefault()
-        }
-    }
-
-    private fun updateTime(time: String) {
-        binding.playerTimer.text = time
-    }
-
-    private fun showDefault() {
-        binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
-    }
-
-    private fun showPrepared() {
-        binding.playerTimer.text = getString(R.string.timer_update_to_zero)
-        binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
-    }
-
-    private fun showPlaying() {
-        binding.playerPlayButton.setImageResource(R.drawable.media_lib_pause_button)
-    }
-
-    private fun showPaused() {
-        binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
     }
 }

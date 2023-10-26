@@ -13,9 +13,8 @@
         android:id="@+id/settings_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:logo="@drawable/ic_arrow_back"
         app:title="@string/setting_text"
-        app:titleMarginStart="46dp" />
+       />
 
 
     <androidx.appcompat.widget.SwitchCompat

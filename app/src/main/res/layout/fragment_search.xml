@@ -101,17 +101,11 @@
             android:text="@string/nothing_found_string" />
 
         <Button
+            style="@style/RefreshButton"
             android:id="@+id/search_refresh_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:backgroundTint="?attr/colorSecondary"
             android:fontFamily="@font/ys_display_medium"
-            android:text="@string/refresh_button_string"
-            android:textColor="?attr/colorOnSecondary"
-            android:textAllCaps="false"
-            android:textSize="16sp"
             app:cornerRadius="54dp"
+            android:textColor="?attr/colorPrimaryVariant"
             />
     </LinearLayout>
     <LinearLayout
