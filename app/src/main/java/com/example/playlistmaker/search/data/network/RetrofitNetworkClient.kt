@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.Response
 import com.example.playlistmaker.search.data.dto.TracksSearchRequest
@@ -11,7 +12,7 @@ import com.example.playlistmaker.search.data.dto.TracksSearchRequest
 class RetrofitNetworkClient(private val iTunesService: ItunesSearchApi, private val context: Context) :
     NetworkClient {
 
-    override fun doRequest(dto: Any): Response {
+    override suspend fun doRequest(dto: Any): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
@@ -24,6 +25,7 @@ class RetrofitNetworkClient(private val iTunesService: ItunesSearchApi, private 
             response.apply { resultCode = 200 }
             return response
         } catch (e: Throwable) {
+            Log.d("ERROR", "$e")
             return Response().apply { resultCode = -1 }
         }
     }
