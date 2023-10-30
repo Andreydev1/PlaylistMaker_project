@@ -8,15 +8,18 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.Track
-import com.example.playlistmaker.search.view_model.TracksSearchState
+import com.example.playlistmaker.search.domain.TracksSearchState
 import com.example.playlistmaker.search.view_model.TracksSearchViewModel
+import com.example.playlistmaker.utils.debounceDelay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -27,7 +30,7 @@ class SearchFragment : Fragment() {
     private val trackAdapter = TrackAdapter()
     private val historyAdapter = TrackAdapter()
 
-
+    private lateinit var onClickDebounce: (Track) -> Unit
     private lateinit var inputTextWatcher: TextWatcher
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -37,18 +40,27 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (viewModel.isHistoryEmpty()) {
-            binding.searchHistoryLayout.visibility = View.GONE
-        }
-
         setListeners()
         customizeRecyclerView()
 
+        onClickDebounce = debounceDelay<Track>(
+            CLICK_DEBOUNCE_DELAY,
+            viewLifecycleOwner.lifecycleScope,
+            false
+        ) { track ->
+            viewModel.addTrackToHistory(track)
+            historyAdapter.notifyDataSetChanged()
+            openPlayer(track)
+        }
 
         binding.ivSearchClear.visibility = clearButtonVisibility(viewModel.getLastSearchText())
 
         viewModel.observeState().observe(viewLifecycleOwner) {
-            render(it)
+            renderState(it)
+        }
+
+        if (viewModel.isHistoryEmpty()) {
+            binding.searchHistoryLayout.visibility = View.GONE
         }
 
     }
@@ -61,11 +73,11 @@ class SearchFragment : Fragment() {
             binding.etSearch.setText("")
             val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
-            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY) {
+
                 trackAdapter.tracks.clear()
                 viewModel.clearSearchingText()
             }
-        }
+
 
         binding.searchRefreshButton.setOnClickListener {
             viewModel.startSearch()
@@ -74,6 +86,17 @@ class SearchFragment : Fragment() {
         binding.searchClearHistoryButton.setOnClickListener {
             viewModel.clearHistory()
             historyAdapter.notifyDataSetChanged()
+        }
+
+        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val inputMethodManager =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
+
+                viewModel.startSearch()
+                true
+            } else false
         }
 
 
@@ -98,17 +121,11 @@ class SearchFragment : Fragment() {
 
     private fun customizeRecyclerView() {
         trackAdapter.onItemClick = { track ->
-            viewModel.addTrackToHistory(track)
-            historyAdapter.notifyDataSetChanged()
-            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY) {
-                openPlayer(track)
-            }
+            onClickDebounce(track)
         }
 
         historyAdapter.onItemClick = { track ->
-            viewModel.handleButtonClick(CLICK_DEBOUNCE_DELAY) {
-                openPlayer(track)
-            }
+            onClickDebounce(track)
         }
 
         binding.rvTracks.layoutManager =
@@ -125,7 +142,7 @@ class SearchFragment : Fragment() {
         if (s.isNullOrEmpty()) View.GONE else View.VISIBLE
 
 
-    private fun render(state: TracksSearchState) {
+    private fun renderState(state: TracksSearchState) {
         when (state) {
             is TracksSearchState.Loading -> showLoading()
             is TracksSearchState.NothingFound -> showNothingFound()

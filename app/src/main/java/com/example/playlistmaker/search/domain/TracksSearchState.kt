@@ -1,6 +1,4 @@
-package com.example.playlistmaker.search.view_model
-
-import com.example.playlistmaker.search.domain.Track
+package com.example.playlistmaker.search.domain
 
 sealed interface TracksSearchState {
     object Loading : TracksSearchState

@@ -2,8 +2,8 @@ package com.example.playlistmaker.search.data.localstorage
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.search.data.LocalStorage
-import com.example.playlistmaker.search.domain.SearchHistory
 import com.example.playlistmaker.search.domain.Track
+import com.example.playlistmaker.search.ui.SearchHistory
 import com.example.playlistmaker.settings.domain.models.Theme
 import com.example.playlistmaker.settings.domain.models.ThemeSettings
 import com.example.playlistmaker.utils.SEARCH_HISTORY
