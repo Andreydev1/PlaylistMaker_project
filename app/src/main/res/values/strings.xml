@@ -59,6 +59,7 @@
     <string name="library_favorites_empty">Ваша библеотека пуста</string>
     <string name="library_favorites">Избранные треки</string>
     <string name="library_playlists">Плейлисты</string>
+    <string name="no_internet_connection">Проверьте подключение к интернету</string>
 
 
 </resources>

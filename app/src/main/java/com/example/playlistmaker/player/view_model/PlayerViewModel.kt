@@ -6,31 +6,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.player.domain.models.PlayerState
-
-
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 class PlayerViewModel(private val player: Player) : ViewModel() {
-    companion object {
-        private const val PLAYING_TIME_UPDATING_DELAY = 300L
-    }
 
     private var timerJob: Job? = null
-
-
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
     fun observePlayerState(): LiveData<PlayerState> = playerState
-
 
     init {
         player.setStateCallback { playerState ->
             renderState(playerState)
         }
     }
-
 
     fun onPlayButtonClicked() {
         when (playerState.value) {
@@ -79,5 +70,10 @@ class PlayerViewModel(private val player: Player) : ViewModel() {
     private fun renderState(state: PlayerState) {
         playerState.postValue(state)
     }
+
+    companion object {
+        private const val PLAYING_TIME_UPDATING_DELAY = 300L
+    }
 }
+
 

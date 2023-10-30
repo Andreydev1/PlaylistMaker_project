@@ -8,7 +8,7 @@ import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.TracksSearchState
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.ui.SearchHistory
-import com.example.playlistmaker.utils.debounceJobDelay
+import com.example.playlistmaker.utils.debounceDelay
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -25,7 +25,7 @@ class TracksSearchViewModel(
     private var searchJob: Job? = null
 
     private val tracksSearchDebounce =
-        debounceJobDelay<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
+        debounceDelay<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             findTracks(changedText)
         }
 

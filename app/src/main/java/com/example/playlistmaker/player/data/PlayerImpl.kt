@@ -6,9 +6,10 @@ import com.example.playlistmaker.player.domain.models.PlayerState
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PlayerImpl() : Player {
 
-    private var mediaPlayer = MediaPlayer()
+class PlayerImpl(private var mediaPlayer: MediaPlayer) : Player {
+
+
     private var state: PlayerState = PlayerState.Default()
     private var stateCallback: ((PlayerState) -> Unit)? = null
 
