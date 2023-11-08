@@ -2,12 +2,15 @@ package com.example.playlistmaker.di
 
 import android.content.Context.MODE_PRIVATE
 import android.media.MediaPlayer
+import androidx.room.Room
+import com.example.playlistmaker.library.data.AppDataBase
 import com.example.playlistmaker.player.data.PlayerImpl
 import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.network.ItunesSearchApi
 import com.example.playlistmaker.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.search.ui.SearchHistory
+import com.example.playlistmaker.utils.PLAYLIST_MAKER_PREFERENCES
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -31,7 +34,7 @@ val dataModule = module {
 
     single {
         androidContext()
-            .getSharedPreferences("PLAYLIST_MAKER_PREFERENCES", MODE_PRIVATE)
+            .getSharedPreferences(PLAYLIST_MAKER_PREFERENCES, MODE_PRIVATE)
     }
 
     factory { Gson() }
@@ -42,6 +45,10 @@ val dataModule = module {
 
     single<NetworkClient> {
         RetrofitNetworkClient(get(), androidContext())
+    }
+    single {
+        Room.databaseBuilder(androidContext(), AppDataBase::class.java, "favorites.db")
+            .build()
     }
 
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.search.domain.Track
 import com.example.playlistmaker.search.domain.TracksSearchState
 import com.example.playlistmaker.search.domain.api.TracksInteractor
+import com.example.playlistmaker.search.domain.api.TracksRepository
 import com.example.playlistmaker.search.ui.SearchHistory
 import com.example.playlistmaker.utils.debounceDelay
 import kotlinx.coroutines.Job
@@ -14,12 +15,10 @@ import kotlinx.coroutines.launch
 
 class TracksSearchViewModel(
     private val tracksInteractor: TracksInteractor,
-    private val history: SearchHistory
+    private val history: SearchHistory,
+    private val tracksRepository: TracksRepository
 ) : ViewModel() {
 
-    companion object {
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
 
     private var lastSearchText: String? = null
     private var searchJob: Job? = null
@@ -28,10 +27,11 @@ class TracksSearchViewModel(
         debounceDelay<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             findTracks(changedText)
         }
+    private val historyState = MutableLiveData<List<Track>>()
 
     private val stateLiveData = MutableLiveData<TracksSearchState>()
     fun observeState(): LiveData<TracksSearchState> = stateLiveData
-
+    fun observeHistoryState(): LiveData<List<Track>> = historyState
     fun addTrackToHistory(track: Track) {
         history.add(track)
     }
@@ -99,11 +99,41 @@ class TracksSearchViewModel(
         return lastSearchText ?: ""
     }
 
-    fun getHistoryList(): MutableList<Track> {
-        return history.tracksList
+    fun updateHistoryList() {
+        signHistoryList(history.tracksList)
     }
 
     private fun renderState(state: TracksSearchState) {
         stateLiveData.postValue(state)
     }
+
+    private fun signHistoryList(tracks: List<Track>) {
+        viewModelScope.launch {
+            tracksRepository.getFavoriteTrackList(tracks)
+                .collect { trackList ->
+                    historyState.postValue(trackList)
+                }
+        }
+    }
+
+    fun updateSearchResults(tracks: List<Track>) {
+        if (tracks.isNotEmpty()) {
+            signHistoryList(tracks)
+        }
+    }
+
+    private fun signSearchResult(tracks: List<Track>) {
+        viewModelScope.launch {
+            tracksRepository
+                .getFavoriteTrackList(tracks)
+                .collect { trackList ->
+                    renderState(TracksSearchState.Success(trackList))
+                }
+        }
+    }
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
 }
+

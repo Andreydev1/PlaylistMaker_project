@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/background_color"
-    tools:context=".library.ui.LibraryFragment">
+    tools:context=".library.ui.fragments.LibraryFragment">
 
-    <LinearLayout style="@style/HeaderLayoutStyle"
+    <LinearLayout
+        style="@style/HeaderLayoutStyle"
         android:orientation="horizontal">
+
         <TextView
             style="@style/HeaderTextStyle"
-            android:text="@string/button_library_name"/>
+            android:text="@string/button_library_name" />
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout

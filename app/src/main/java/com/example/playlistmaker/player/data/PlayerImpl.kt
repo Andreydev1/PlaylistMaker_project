@@ -13,7 +13,7 @@ class PlayerImpl(private var mediaPlayer: MediaPlayer) : Player {
     private var state: PlayerState = PlayerState.Default()
     private var stateCallback: ((PlayerState) -> Unit)? = null
 
-    override fun prepare(previewUrl: String) {
+    override fun prepare(previewUrl: String?) {
         mediaPlayer = MediaPlayer()
         mediaPlayer.setDataSource(previewUrl)
         mediaPlayer.prepareAsync()

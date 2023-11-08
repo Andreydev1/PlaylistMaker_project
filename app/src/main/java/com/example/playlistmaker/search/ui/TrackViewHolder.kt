@@ -23,12 +23,13 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(model: Track){
         trackName.text = model.trackName
         artistName.text = model.artistName
-        trackTime.text =  SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime.toInt())
+        trackTime.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime?.toInt())
         Glide.with(itemView)
             .load(model.artworkUrl100)
             .centerCrop()
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_rounded_corners)))
-            .placeholder(R.drawable.media_lib_cover_placeholder)
+            .placeholder(R.drawable.medialib_cover_placeholder)
             .into(artworkUrl100)
 
     }

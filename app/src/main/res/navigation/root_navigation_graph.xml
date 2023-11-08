@@ -12,7 +12,7 @@
         tools:layout="@layout/activity_player" />
     <fragment
         android:id="@+id/libraryFragment"
-        android:name="com.example.playlistmaker.library.ui.LibraryFragment"
+        android:name="com.example.playlistmaker.library.ui.fragments.LibraryFragment"
         android:label="fragment_library"
         tools:layout="@layout/fragment_library" />
     <fragment
@@ -28,12 +28,12 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.playlistmaker.library.ui.FavoritesFragment"
+        android:name="com.example.playlistmaker.library.ui.fragments.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
     <fragment
         android:id="@+id/playlistsFragment"
-        android:name="com.example.playlistmaker.library.ui.PlaylistsFragment"
+        android:name="com.example.playlistmaker.library.ui.fragments.PlaylistsFragment"
         android:label="fragment_playlists"
         tools:layout="@layout/fragment_playlists" />
 </navigation>

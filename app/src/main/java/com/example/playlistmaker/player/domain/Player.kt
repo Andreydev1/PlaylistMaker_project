@@ -4,7 +4,7 @@ import com.example.playlistmaker.player.domain.models.PlayerState
 
 
 interface Player {
-    fun prepare(previewUrl: String)
+    fun prepare(previewUrl: String?)
     fun start()
     fun pause()
     fun release()
