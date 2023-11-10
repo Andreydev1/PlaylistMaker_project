@@ -19,10 +19,9 @@ class PlayerViewModel(
 ) : ViewModel() {
 
     private var timerJob: Job? = null
+
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
-
     fun observePlayerState(): LiveData<PlayerState> = playerState
-
 
     private val favoriteState = MutableLiveData<Boolean>()
     fun observeFavoriteState(): LiveData<Boolean> = favoriteState
@@ -62,6 +61,7 @@ class PlayerViewModel(
 
     fun pausePlayer() {
         player.pause()
+        timerJob?.cancel()
     }
 
     fun releasePlayer() {
@@ -101,9 +101,13 @@ class PlayerViewModel(
         }
     }
 
+
     companion object {
         private const val PLAYING_TIME_UPDATING_DELAY = 300L
     }
 }
+
+
+
 
 

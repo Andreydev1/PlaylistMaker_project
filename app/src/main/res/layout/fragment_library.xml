@@ -23,6 +23,7 @@
         android:layout_marginHorizontal="16dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
+        android:paddingStart="13dp"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
