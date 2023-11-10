@@ -75,10 +75,14 @@ class FavoritesFragment : Fragment() {
     private fun showSuccess(tracks: List<Track>) {
         binding.mediaLibEmpty.visibility = View.GONE
         binding.favoritesRecyclerView.visibility = View.VISIBLE
-
         favoritesTrackAdapter.tracks.clear()
         favoritesTrackAdapter.tracks.addAll(tracks)
         favoritesTrackAdapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFavoritesList()
     }
 
     companion object {

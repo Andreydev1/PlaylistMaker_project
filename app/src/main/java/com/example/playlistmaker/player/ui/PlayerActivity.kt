@@ -84,7 +84,6 @@ class PlayerActivity : AppCompatActivity() {
         super.onPause()
         viewModel.pausePlayer()
     }
-
     override fun onDestroy() {
         super.onDestroy()
         viewModel.releasePlayer()
