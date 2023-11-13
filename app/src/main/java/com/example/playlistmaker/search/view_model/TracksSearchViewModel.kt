@@ -27,6 +27,7 @@ class TracksSearchViewModel(
         debounceDelay<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) { changedText ->
             findTracks(changedText)
         }
+
     private val historyState = MutableLiveData<List<Track>>()
 
     private val stateLiveData = MutableLiveData<TracksSearchState>()
@@ -76,6 +77,7 @@ class TracksSearchViewModel(
     }
 
     fun clearSearchingText() {
+        updateHistoryList()
         renderState(TracksSearchState.History)
     }
 
@@ -118,7 +120,7 @@ class TracksSearchViewModel(
 
     fun updateSearchResults(tracks: List<Track>) {
         if (tracks.isNotEmpty()) {
-            signHistoryList(tracks)
+            signSearchResult(tracks)
         }
     }
 

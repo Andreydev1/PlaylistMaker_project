@@ -83,6 +83,7 @@ class FavoritesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         viewModel.getFavoritesList()
+        viewModel.observeState()
     }
 
     companion object {
