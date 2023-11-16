@@ -4,13 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/background_color"
-    tools:context=".library.ui.LibraryFragment">
+    tools:context=".library.ui.fragments.LibraryFragment">
 
-    <LinearLayout style="@style/HeaderLayoutStyle"
+    <LinearLayout
+        style="@style/HeaderLayoutStyle"
         android:orientation="horizontal">
+
         <TextView
             style="@style/HeaderTextStyle"
-            android:text="@string/button_library_name"/>
+            android:text="@string/button_library_name" />
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -21,6 +23,7 @@
         android:layout_marginHorizontal="16dp"/>
 
     <androidx.viewpager2.widget.ViewPager2
+        android:paddingStart="13dp"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

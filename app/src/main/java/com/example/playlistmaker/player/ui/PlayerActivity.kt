@@ -18,15 +18,19 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
     private val viewModel by viewModel<PlayerViewModel>()
 
+    private lateinit var currentTrack: Track
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val currentTrack = intent.getSerializableExtra("track") as Track
-
+        currentTrack = intent.getSerializableExtra("track") as Track
         viewModel.preparePlayer(currentTrack.previewUrl)
+
+        viewModel.observeFavoriteState().observe(this) {
+            binding.playerLikeButton.setImageResource(if (it) R.drawable.medialib_liked_button else R.drawable.medialib_unlike_button)
+        }
 
         setTrackInfo(currentTrack)
         setListeners()
@@ -36,8 +40,8 @@ class PlayerActivity : AppCompatActivity() {
             binding.playerTimer.text = it.progress
 
             when (it) {
-                is PlayerState.Playing -> binding.playerPlayButton.setImageResource(R.drawable.media_lib_pause_button)
-                else -> binding.playerPlayButton.setImageResource(R.drawable.media_lib_play_button)
+                is PlayerState.Playing -> binding.playerPlayButton.setImageResource(R.drawable.medialib_pause_button)
+                else -> binding.playerPlayButton.setImageResource(R.drawable.medialib_play_button)
             }
         }
     }
@@ -50,32 +54,36 @@ class PlayerActivity : AppCompatActivity() {
         binding.playerPlayButton.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
+        binding.playerLikeButton.setOnClickListener {
+            viewModel.onFavoriteClicked(currentTrack)
+        }
     }
 
     private fun setTrackInfo(track: Track) {
         binding.playerTrackName.text = track.trackName
         binding.playerArtistName.text = track.artistName
         binding.playerTrackDurationData.text =
-            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime.toInt())
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime?.toInt())
         binding.playerTrackAlbumData.text = track.collectionName
-        binding.playerTrackYearData.text = track.releaseDate.substring(0, 4)
+        binding.playerTrackYearData.text = track.releaseDate?.substring(0, 4)
         binding.playerTrackGenreData.text = track.primaryGenreName
         binding.playerTrackCountryData.text = track.country
         Glide.with(applicationContext)
             .load(track.getCoverArtWork())
             .centerCrop()
             .transform((RoundedCorners(resources.getDimensionPixelSize(R.dimen.player_rounded_corners))))
-            .placeholder(R.drawable.media_lib_cover_placeholder)
+            .placeholder(R.drawable.medialib_cover_placeholder)
             .into(binding.playerAlbumCover)
 
         setAlbumGroupVisibility(track.collectionName != "")
+
+        binding.playerLikeButton.setImageResource(if (currentTrack.isFavorite) R.drawable.medialib_liked_button else R.drawable.medialib_unlike_button)
     }
 
     override fun onPause() {
         super.onPause()
         viewModel.pausePlayer()
     }
-
     override fun onDestroy() {
         super.onDestroy()
         viewModel.releasePlayer()

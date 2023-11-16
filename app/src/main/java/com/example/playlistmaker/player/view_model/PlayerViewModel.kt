@@ -4,18 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.domain.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.player.domain.models.PlayerState
+import com.example.playlistmaker.search.domain.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class PlayerViewModel(private val player: Player) : ViewModel() {
+class PlayerViewModel(
+    private val player: Player,
+    private val favoritesInteractor: FavoritesInteractor
+) : ViewModel() {
 
     private var timerJob: Job? = null
+
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
     fun observePlayerState(): LiveData<PlayerState> = playerState
+
+    private val favoriteState = MutableLiveData<Boolean>()
+    fun observeFavoriteState(): LiveData<Boolean> = favoriteState
 
     init {
         player.setStateCallback { playerState ->
@@ -52,13 +61,14 @@ class PlayerViewModel(private val player: Player) : ViewModel() {
 
     fun pausePlayer() {
         player.pause()
+        timerJob?.cancel()
     }
 
     fun releasePlayer() {
         player.release()
     }
 
-    fun preparePlayer(previewUrl: String) {
+    fun preparePlayer(previewUrl: String?) {
         player.prepare(previewUrl)
     }
 
@@ -71,9 +81,33 @@ class PlayerViewModel(private val player: Player) : ViewModel() {
         playerState.postValue(state)
     }
 
+    private fun renderFavoriteState(inFavorite: Boolean) {
+        favoriteState.postValue(inFavorite)
+    }
+
+    fun onFavoriteClicked(track: Track) {
+        if (track.isFavorite) {
+            viewModelScope.launch {
+                favoritesInteractor.deleteTrack(track)
+                track.isFavorite = false
+                renderFavoriteState(track.isFavorite)
+            }
+        } else {
+            viewModelScope.launch {
+                favoritesInteractor.saveTrack(track)
+                track.isFavorite = true
+                renderFavoriteState(track.isFavorite)
+            }
+        }
+    }
+
+
     companion object {
         private const val PLAYING_TIME_UPDATING_DELAY = 300L
     }
 }
+
+
+
 
 

@@ -56,7 +56,7 @@
     <string name="timer_update_to_zero">00:00</string>
     <string name="library_new_playlist">Новый плейлист</string>
     <string name="library_playlists_empty">Вы не создали ни одного плейлиста</string>
-    <string name="library_favorites_empty">Ваша библеотека пуста</string>
+    <string name="library_favorites_empty">Ваша медиатека пуста</string>
     <string name="library_favorites">Избранные треки</string>
     <string name="library_playlists">Плейлисты</string>
     <string name="no_internet_connection">Проверьте подключение к интернету</string>

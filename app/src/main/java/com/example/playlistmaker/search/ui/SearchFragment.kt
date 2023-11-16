@@ -58,25 +58,40 @@ class SearchFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             renderState(it)
         }
+        viewModel.observeHistoryState().observe(viewLifecycleOwner) {
+            historyAdapter.tracks.clear()
+            historyAdapter.tracks.addAll(it)
+            historyAdapter.notifyDataSetChanged()
+        }
 
         if (viewModel.isHistoryEmpty()) {
             binding.searchHistoryLayout.visibility = View.GONE
         }
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         inputTextWatcher.let { binding.etSearch.removeTextChangedListener(it) }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewModel.updateSearchResults(trackAdapter.tracks)
+        viewModel.updateHistoryList()
+    }
+
     private fun setListeners() {
         binding.ivSearchClear.setOnClickListener {
             binding.etSearch.setText("")
-            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            val inputMethodManager =
+                requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
 
-                trackAdapter.tracks.clear()
-                viewModel.clearSearchingText()
-            }
+            trackAdapter.tracks.clear()
+            viewModel.clearSearchingText()
+        }
 
 
         binding.searchRefreshButton.setOnClickListener {
@@ -135,7 +150,7 @@ class SearchFragment : Fragment() {
         binding.rvTracksHistory.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvTracksHistory.adapter = historyAdapter
-        historyAdapter.tracks = viewModel.getHistoryList()
+        viewModel.updateHistoryList()
     }
 
     private fun clearButtonVisibility(s: CharSequence?) =
