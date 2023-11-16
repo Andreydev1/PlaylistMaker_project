@@ -22,5 +22,6 @@
         <item name="background_search_color">@color/ultra_white</item>
         <item name="search_color">@color/deep_gray</item>
         <item name="player_icon_color">@color/player_grey_button_night</item>
+        <item name="bottom_sheet_rectangle_color">@color/white</item>
     </style>
 </resources>

@@ -16,15 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
-import com.example.playlistmaker.search.domain.Track
-import com.example.playlistmaker.search.domain.TracksSearchState
+import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.models.TracksSearchState
 import com.example.playlistmaker.search.view_model.TracksSearchViewModel
 import com.example.playlistmaker.utils.debounceDelay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
     private val viewModel by viewModel<TracksSearchViewModel>()
 
     private val trackAdapter = TrackAdapter()
@@ -33,10 +34,15 @@ class SearchFragment : Fragment() {
     private lateinit var onClickDebounce: (Track) -> Unit
     private lateinit var inputTextWatcher: TextWatcher
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -73,6 +79,7 @@ class SearchFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         inputTextWatcher.let { binding.etSearch.removeTextChangedListener(it) }
+        _binding = null
     }
 
     override fun onResume() {

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/background_color"
-    tools:context=".library.ui.fragments.LibraryFragment">
+    tools:context=".library.ui.LibraryFragment">
 
     <LinearLayout
         style="@style/HeaderLayoutStyle"

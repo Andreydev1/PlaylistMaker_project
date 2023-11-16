@@ -3,7 +3,7 @@ package com.example.playlistmaker.di
 import android.content.Context.MODE_PRIVATE
 import android.media.MediaPlayer
 import androidx.room.Room
-import com.example.playlistmaker.library.data.AppDataBase
+import com.example.playlistmaker.library.favorites.data.AppDataBase
 import com.example.playlistmaker.player.data.PlayerImpl
 import com.example.playlistmaker.player.domain.Player
 import com.example.playlistmaker.search.data.NetworkClient
