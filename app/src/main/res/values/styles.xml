@@ -154,8 +154,9 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
         <item name="android:textSize">14sp</item>
         <item name="cornerRadius">54dp</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
     </style>
 </resources>

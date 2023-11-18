@@ -7,8 +7,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityRootBinding
+import com.example.playlistmaker.utils.BottomNavigationListener
 
-class RootActivity : AppCompatActivity() {
+class RootActivity : AppCompatActivity(), BottomNavigationListener {
 
     private lateinit var binding: ActivityRootBinding
 
@@ -18,7 +19,8 @@ class RootActivity : AppCompatActivity() {
         binding = ActivityRootBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.rootFragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
         binding.bottomNavigationView.setupWithNavController(navController)
@@ -35,4 +37,14 @@ class RootActivity : AppCompatActivity() {
         }
     }
 
+    override fun setBottomNavigationVisibility(isVisible: Boolean) {
+        val bottomNavigationView = binding.bottomNavigationView
+        if (isVisible) {
+            bottomNavigationView.visibility = View.VISIBLE
+        } else {
+            bottomNavigationView.visibility = View.GONE
+        }
+    }
+
 }
+

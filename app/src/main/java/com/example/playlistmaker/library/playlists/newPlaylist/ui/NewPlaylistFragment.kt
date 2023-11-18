@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.playlists.newPlaylist.ui
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -20,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.player.ui.PlayerActivity
+import com.example.playlistmaker.utils.BottomNavigationListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +33,7 @@ class NewPlaylistFragment : Fragment() {
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
 
+    private var bottomNavigationListener: BottomNavigationListener? = null
     private val viewModel by viewModel<NewPlaylistViewModel>()
 
     private var coverUri: Uri? = null
@@ -47,6 +50,7 @@ class NewPlaylistFragment : Fragment() {
     ): View? {
         _binding = FragmentNewPlaylistBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +60,6 @@ class NewPlaylistFragment : Fragment() {
         initTextWatchers()
         setListeners()
         setSaveButtonVisibility(null)
-
         confirmDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.newPlaylist_question_title))
             .setMessage(getString(R.string.newPlaylist_question_message))
@@ -65,7 +68,14 @@ class NewPlaylistFragment : Fragment() {
             .setPositiveButton(getString(R.string.newPlaylist_question_save_button)) { dialog, which ->
                 navigateOut()
             }
+            .setOnDismissListener {
+
+            }
+
+        bottomNavigationListener?.setBottomNavigationVisibility(false)
+
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -219,6 +229,19 @@ class NewPlaylistFragment : Fragment() {
             (activity as PlayerActivity).hideBottomSheet(this)
         }
     }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is BottomNavigationListener) {
+            bottomNavigationListener = context
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        bottomNavigationListener = null
+    }
+
 
     companion object {
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"

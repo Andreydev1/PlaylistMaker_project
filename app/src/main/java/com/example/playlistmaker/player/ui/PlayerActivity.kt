@@ -42,6 +42,9 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(binding.root)
         currentTrack = intent.getSerializableExtra("track") as Track
         viewModel.preparePlayer(currentTrack.previewUrl)
+        binding.overlay.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
 
         viewModel.observeFavoriteState().observe(this) {
             binding.playerLikeButton.setImageResource(if (it) R.drawable.medialib_liked_button else R.drawable.medialib_unlike_button)
@@ -199,6 +202,16 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun showNoPlaylists() {
         binding.playlistsRecyclerView.visibility = View.GONE
+    }
+
+    override fun onBackPressed() {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED ||
+            bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
+        ) {
+            finish()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     companion object {
