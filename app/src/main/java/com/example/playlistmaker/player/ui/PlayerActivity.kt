@@ -204,16 +204,6 @@ class PlayerActivity : AppCompatActivity() {
         binding.playlistsRecyclerView.visibility = View.GONE
     }
 
-    override fun onBackPressed() {
-        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED ||
-            bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED
-        ) {
-            finish()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     companion object {
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
         private const val CLICK_DEBOUNCE_DELAY = 1000L

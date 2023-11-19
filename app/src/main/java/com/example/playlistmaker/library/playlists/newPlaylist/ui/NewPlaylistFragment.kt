@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.example.playlistmaker.library.favorites.domain.models.Playlist
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.utils.BottomNavigationListener
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -32,6 +33,7 @@ import java.io.FileOutputStream
 class NewPlaylistFragment : Fragment() {
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
+    private var currentPlaylist: Playlist? = null
 
     private var bottomNavigationListener: BottomNavigationListener? = null
     private val viewModel by viewModel<NewPlaylistViewModel>()
@@ -75,8 +77,6 @@ class NewPlaylistFragment : Fragment() {
         bottomNavigationListener?.setBottomNavigationVisibility(false)
 
     }
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         titleTextWatcher.let { binding.name.removeTextChangedListener(it) }
@@ -90,12 +90,7 @@ class NewPlaylistFragment : Fragment() {
 
     private fun setListeners() {
         binding.back.setOnClickListener {
-            if (coverUri != null || binding.name.text.toString()
-                    .isNotEmpty() || binding.description.text.toString().isNotEmpty()
-            )
-                confirmDialog.show()
-            else
-                navigateOut()
+            checkNavigateOut()
         }
 
         binding.save.setOnClickListener {
@@ -114,15 +109,15 @@ class NewPlaylistFragment : Fragment() {
                 navigateOut()
             }
         }
-
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    confirmDialog.show()
+                    checkNavigateOut()
                 }
             }
             )
+
     }
 
     private fun initCoverPicker() {
@@ -242,6 +237,18 @@ class NewPlaylistFragment : Fragment() {
         bottomNavigationListener = null
     }
 
+    private fun checkNavigateOut() {
+        if (currentPlaylist != null)
+            findNavController().navigateUp()
+        else {
+            if (coverUri != null || binding.name.text.toString()
+                    .isNotEmpty() || binding.description.text.toString().isNotEmpty()
+            )
+                confirmDialog.show()
+            else
+                navigateOut()
+        }
+    }
 
     companion object {
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
