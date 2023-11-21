@@ -34,7 +34,6 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var onPlaylistClickDebounce: (Playlist) -> Unit
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,6 +43,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.preparePlayer(currentTrack.previewUrl)
         binding.overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            binding.overlay.visibility = View.GONE
         }
 
         viewModel.observeFavoriteState().observe(this) {
@@ -72,11 +72,10 @@ class PlayerActivity : AppCompatActivity() {
         initBottomSheet()
     }
 
-    fun hideBottomSheet(fragment: NewPlaylistFragment) {
+    fun hideBottomSheet() {
         binding.scrollView.isVisible = true
         binding.playlistsBottomSheet.isVisible = true
         binding.overlay.isVisible = true
-
         binding.fragmentContainer.isVisible = false
         playlistsAdapter.playlists.clear()
         viewModel.getPlaylists()
@@ -194,7 +193,6 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun showSuccess(playlists: List<Playlist>) {
         binding.playlistsRecyclerView.visibility = View.VISIBLE
-
         playlistsAdapter.playlists.clear()
         playlistsAdapter.playlists.addAll(playlists)
         playlistsAdapter.notifyDataSetChanged()
@@ -204,8 +202,10 @@ class PlayerActivity : AppCompatActivity() {
         binding.playlistsRecyclerView.visibility = View.GONE
     }
 
+
     companion object {
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
+
 }

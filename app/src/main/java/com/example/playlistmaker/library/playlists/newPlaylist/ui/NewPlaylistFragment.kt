@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
@@ -37,9 +37,8 @@ class NewPlaylistFragment : Fragment() {
 
     private var bottomNavigationListener: BottomNavigationListener? = null
     private val viewModel by viewModel<NewPlaylistViewModel>()
-
     private var coverUri: Uri? = null
-
+    private var backPressedOnce = false
     private lateinit var titleTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
 
@@ -69,7 +68,11 @@ class NewPlaylistFragment : Fragment() {
             }
             .setPositiveButton(getString(R.string.newPlaylist_question_save_button)) { dialog, which ->
                 navigateOut()
+                coverUri = null
+                binding.name.text = null
+                binding.description.text = null
             }
+
             .setOnDismissListener {
 
             }
@@ -109,16 +112,23 @@ class NewPlaylistFragment : Fragment() {
                 navigateOut()
             }
         }
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    checkNavigateOut()
-                }
-            }
-            )
 
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            if (coverUri != null || binding.name.text.toString()
+                    .isNotEmpty() || binding.description.text.toString().isNotEmpty()
+            ) {
+                if (backPressedOnce) {
+                    requireActivity().finish()
+                } else {
+                    confirmDialog.show()
+                }
+            } else {
+                backPressedOnce = true
+                requireActivity().finish()
+            }
+        }
     }
+
 
     private fun initCoverPicker() {
         val pickMedia =
@@ -221,7 +231,7 @@ class NewPlaylistFragment : Fragment() {
         if (currentTrackId.isNullOrEmpty()) {
             findNavController().navigateUp()
         } else {
-            (activity as PlayerActivity).hideBottomSheet(this)
+            (activity as PlayerActivity).hideBottomSheet()
         }
     }
 
@@ -237,6 +247,7 @@ class NewPlaylistFragment : Fragment() {
         bottomNavigationListener = null
     }
 
+
     private fun checkNavigateOut() {
         if (currentPlaylist != null)
             findNavController().navigateUp()
@@ -249,6 +260,7 @@ class NewPlaylistFragment : Fragment() {
                 navigateOut()
         }
     }
+
 
     companion object {
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
