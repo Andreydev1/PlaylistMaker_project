@@ -41,7 +41,6 @@ class NewPlaylistFragment : Fragment() {
     private var backPressedOnce = false
     private lateinit var titleTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
-
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(
@@ -124,7 +123,10 @@ class NewPlaylistFragment : Fragment() {
                 }
             } else {
                 backPressedOnce = true
-                requireActivity().finish()
+                view?.postDelayed({
+                    backPressedOnce = false
+                    (activity as PlayerActivity).closeNewPlaylistFragment()
+                }, BACK_PRESS_DELAY)
             }
         }
     }
@@ -231,7 +233,7 @@ class NewPlaylistFragment : Fragment() {
         if (currentTrackId.isNullOrEmpty()) {
             findNavController().navigateUp()
         } else {
-            (activity as PlayerActivity).hideBottomSheet()
+            (activity as PlayerActivity).closeNewPlaylistFragment()
         }
     }
 
@@ -264,5 +266,6 @@ class NewPlaylistFragment : Fragment() {
 
     companion object {
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
+        const val BACK_PRESS_DELAY = 300L
     }
 }

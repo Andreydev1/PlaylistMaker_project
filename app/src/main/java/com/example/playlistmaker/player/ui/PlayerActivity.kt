@@ -72,14 +72,17 @@ class PlayerActivity : AppCompatActivity() {
         initBottomSheet()
     }
 
-    fun hideBottomSheet() {
-        binding.scrollView.isVisible = true
-        binding.playlistsBottomSheet.isVisible = true
-        binding.overlay.isVisible = true
-        binding.fragmentContainer.isVisible = false
-        playlistsAdapter.playlists.clear()
-        viewModel.getPlaylists()
+    fun closeNewPlaylistFragment() {
+        val newPlaylistFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+        if (newPlaylistFragment != null && newPlaylistFragment is NewPlaylistFragment) {
+            supportFragmentManager.beginTransaction().remove(newPlaylistFragment).commit()
+            binding.scrollView.isVisible = true
+            binding.playlistsBottomSheet.isVisible = true
+            binding.overlay.isVisible = true
+            binding.fragmentContainer.isVisible = false
+        }
     }
+
 
     private fun setListeners() {
         binding.playerBack.setOnClickListener {
