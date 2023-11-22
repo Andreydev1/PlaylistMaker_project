@@ -122,11 +122,13 @@ class NewPlaylistFragment : Fragment() {
                     confirmDialog.show()
                 }
             } else {
-                backPressedOnce = true
-                view?.postDelayed({
+                val currentActivity = activity
+                if (currentActivity is PlayerActivity) {
                     backPressedOnce = false
                     (activity as PlayerActivity).closeNewPlaylistFragment()
-                }, BACK_PRESS_DELAY)
+                } else {
+                    checkNavigateOut()
+                }
             }
         }
     }
