@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.playlistmaker.library.ui.fragments.FavoritesFragment
-import com.example.playlistmaker.library.ui.fragments.PlaylistsFragment
+import com.example.playlistmaker.library.favorites.ui.FavoritesFragment
+import com.example.playlistmaker.library.playlists.ui.PlaylistFragment
 
 
 class LibraryViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) : FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -17,7 +17,7 @@ class LibraryViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifec
     override fun createFragment(position: Int): Fragment {
         return when(position) {
             0 -> FavoritesFragment.newInstance()
-            else -> PlaylistsFragment.newInstance()
+            else -> PlaylistFragment.newInstance()
         }
     }
 }

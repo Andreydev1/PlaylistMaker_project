@@ -1,6 +1,0 @@
-package com.example.playlistmaker.library.ui.view_models
-
-import androidx.lifecycle.ViewModel
-
-class PlaylistsViewModel: ViewModel() {
-}

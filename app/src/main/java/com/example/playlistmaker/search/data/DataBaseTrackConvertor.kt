@@ -1,7 +1,7 @@
 package com.example.playlistmaker.search.data
 
-import com.example.playlistmaker.library.data.entity.TrackEntity
-import com.example.playlistmaker.search.domain.Track
+import com.example.playlistmaker.library.favorites.data.entity.TrackEntity
+import com.example.playlistmaker.search.domain.models.Track
 
 class DataBaseTrackConvertor {
     fun map(track: TrackEntity): Track {

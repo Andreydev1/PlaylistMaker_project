@@ -1,6 +1,6 @@
 package com.example.playlistmaker.settings.data.impl
 
-import com.example.playlistmaker.search.data.LocalStorage
+import com.example.playlistmaker.search.domain.api.LocalStorage
 import com.example.playlistmaker.settings.data.api.SettingsRepository
 import com.example.playlistmaker.settings.domain.models.ThemeSettings
 

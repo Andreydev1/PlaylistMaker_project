@@ -26,13 +26,17 @@ class PlayerImpl(private var mediaPlayer: MediaPlayer) : Player {
     }
 
     override fun start() {
-        mediaPlayer.start()
-        updateState(PlayerState.Playing(getCurrentPlayerPosition()))
+        if (state !is PlayerState.Default) {
+            mediaPlayer.start()
+            updateState(PlayerState.Playing(getCurrentPlayerPosition()))
+        }
     }
 
     override fun pause() {
-        mediaPlayer.pause()
-        updateState(PlayerState.Paused(getCurrentPlayerPosition()))
+        if (state !is PlayerState.Default) {
+            mediaPlayer.pause()
+            updateState(PlayerState.Paused(getCurrentPlayerPosition()))
+        }
     }
 
     override fun release() {

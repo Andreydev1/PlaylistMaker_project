@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.search.domain.Track
-import com.example.playlistmaker.search.domain.TracksSearchState
 import com.example.playlistmaker.search.domain.api.TracksInteractor
 import com.example.playlistmaker.search.domain.api.TracksRepository
+import com.example.playlistmaker.search.domain.models.Track
+import com.example.playlistmaker.search.domain.models.TracksSearchState
 import com.example.playlistmaker.search.ui.SearchHistory
 import com.example.playlistmaker.utils.debounceDelay
 import kotlinx.coroutines.Job

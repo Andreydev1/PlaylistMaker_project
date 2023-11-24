@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="312dp"
+        android:height="312dp"
+        android:drawable="@drawable/playlists_rectangle_shape"
+        android:gravity="center" />
+
+    <item
+        android:drawable="@drawable/playlists_place_holder"
+        android:gravity="center" />
+</layer-list>

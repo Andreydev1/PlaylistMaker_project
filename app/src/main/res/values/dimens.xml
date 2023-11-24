@@ -38,6 +38,15 @@
     <dimen name="track_rounded_corners">2dp</dimen>
     <dimen name="player_rounded_corners">8dp</dimen>
     <dimen name="progress_bar_dimens">44dp</dimen>
-    <dimen name="library_text_size">19sp</dimen>
     <dimen name="library_empty_icon_size">120sp</dimen>
+    <dimen name="search_track_layout_height">60dp</dimen>
+    <dimen name="search_track_cover_size">48dp</dimen>
+    <dimen name="search_track_dot_icon_size">4dp</dimen>
+    <dimen name="album_cover_corner_radius">8px</dimen>
+    <dimen name="search_track_text_size">16sp</dimen>
+    <dimen name="search_track_info_text_size">12sp</dimen>
+    <dimen name="search_info_text_size">20sp</dimen>
+    <dimen name="library_text_size">19sp</dimen>
+    <dimen name="playlist_cover_corner_radius">8px</dimen>
+    <dimen name="root_bottom_navigation_text_size">12sp</dimen>
 </resources>
