@@ -7,6 +7,13 @@ import com.example.playlistmaker.sharing.data.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.model.EmailData
 
 class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
+    override fun sharePlaylist(playlist: String): Intent {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, playlist)
+        return Intent.createChooser(intent, "Share with:")
+    }
+
     override fun navigateToShare(shareAppLink: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"

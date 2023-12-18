@@ -6,7 +6,7 @@ import com.example.playlistmaker.library.favorites.data.entity.TrackPlaylistEnti
 import com.example.playlistmaker.library.favorites.domain.models.Playlist
 import com.example.playlistmaker.search.domain.models.Track
 
-class PlaylistDbConvertor {
+class DataBasePlaylistConvertor {
     fun map(playlist: PlaylistEntity): Playlist {
         return Playlist(
             playlist.id,
@@ -45,7 +45,7 @@ class PlaylistDbConvertor {
     }
 
     fun map(trackId: Long, playlistId: Long): TrackPlaylistEntity {
-        return TrackPlaylistEntity(trackId, playlistId)
+        return TrackPlaylistEntity(trackId, playlistId, System.currentTimeMillis())
     }
 
 }

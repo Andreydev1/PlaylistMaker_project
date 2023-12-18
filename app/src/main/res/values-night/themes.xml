@@ -13,7 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-
+        <item name="playlist_size">@color/white</item>
         <item name="background_color">@color/YPBlack</item>
         <item name="background_main_color">@color/YPBlack</item>
         <item name="text_color">@color/ultra_white</item>

@@ -11,13 +11,16 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.library.favorites.domain.models.Playlist
@@ -31,16 +34,20 @@ import java.io.FileOutputStream
 
 
 class NewPlaylistFragment : Fragment() {
-    private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
-    private var currentPlaylist: Playlist? = null
-
-    private var bottomNavigationListener: BottomNavigationListener? = null
     private val viewModel by viewModel<NewPlaylistViewModel>()
+    private val binding get() = _binding!!
+    private var _binding: FragmentNewPlaylistBinding? = null
+    private var currentPlaylist: Playlist? = null
     private var coverUri: Uri? = null
+    private var bottomNavigationListener: BottomNavigationListener? = null
+
+
+    private var coverPath = ""
     private var backPressedOnce = false
+
     private lateinit var titleTextWatcher: TextWatcher
     private lateinit var descriptionTextWatcher: TextWatcher
+
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
 
     override fun onCreateView(
@@ -55,6 +62,20 @@ class NewPlaylistFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+        if (arguments?.containsKey(PLAYLIST_ID) == true) {
+            val currentPlaylistId = arguments?.getLong(PLAYLIST_ID)
+            if (currentPlaylistId != null)
+                viewModel.getPlaylistInfo(currentPlaylistId)
+        }
+
+        viewModel.observePlaylist().observe(viewLifecycleOwner) {
+            currentPlaylist = it
+            setPlaylistInfo(it)
+        }
+
 
         initCoverPicker()
         initTextWatchers()
@@ -72,13 +93,10 @@ class NewPlaylistFragment : Fragment() {
                 binding.description.text = null
             }
 
-            .setOnDismissListener {
-
-            }
-
         bottomNavigationListener?.setBottomNavigationVisibility(false)
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         titleTextWatcher.let { binding.name.removeTextChangedListener(it) }
@@ -97,18 +115,10 @@ class NewPlaylistFragment : Fragment() {
 
         binding.save.setOnClickListener {
             if (binding.name.text.toString().isNotEmpty()) {
-                val coverPath = saveImageToPrivateStorage(coverUri, binding.name.text.toString())
-                viewModel.createPlaylist(
-                    binding.name.text.toString(),
-                    binding.description.text.toString(),
-                    coverPath
-                )
-                Toast.makeText(
-                    requireContext(),
-                    "Плейлист " + binding.name.text.toString() + " создан",
-                    Toast.LENGTH_LONG
-                ).show()
-                navigateOut()
+                if (currentPlaylist != null)
+                    updatePlaylist()
+                else
+                    createPlaylist()
             }
         }
 
@@ -246,6 +256,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
+
     override fun onDetach() {
         super.onDetach()
         bottomNavigationListener = null
@@ -265,9 +276,53 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
+    private fun setPlaylistInfo(playlist: Playlist) {
+        binding.name.setText(playlist.name)
+        binding.description.setText(playlist.description)
+        Glide.with(requireContext())
+            .load(playlist.coverPath)
+            .centerCrop()
+            .placeholder(R.drawable.medialib_cover_placeholder)
+            .into(binding.cover)
+        binding.save.text = getString(R.string.save)
+        binding.headerText.text = getString(R.string.edit)
+        coverPath = playlist.coverPath
+    }
+
+    private fun updatePlaylist() {
+        if (coverUri != null)
+            coverPath = saveImageToPrivateStorage(coverUri, binding.name.text.toString())
+        viewModel.updatePlaylist(
+            currentPlaylist?.id,
+            binding.name.text.toString(),
+            binding.description.text.toString(),
+            coverPath
+        )
+        checkNavigateOut()
+    }
+
+    private fun createPlaylist() {
+        coverPath = saveImageToPrivateStorage(coverUri, binding.name.text.toString())
+        viewModel.createPlaylist(
+            binding.name.text.toString(),
+            binding.description.text.toString(),
+            coverPath
+        )
+        Toast.makeText(
+            requireContext(),
+            "Плейлист " + binding.name.text.toString() + " создан",
+            Toast.LENGTH_LONG
+        ).show()
+        navigateOut()
+    }
+
 
     companion object {
+        private const val PLAYLIST_ID = "playlist_id"
         const val CURRENT_TRACK_ID = "CURRENT_TRACK_ID"
-        const val BACK_PRESS_DELAY = 300L
+
+        fun createArgs(playlistId: Long): Bundle =
+            bundleOf(PLAYLIST_ID to playlistId)
+
     }
 }
