@@ -16,6 +16,7 @@ import com.example.playlistmaker.library.playlists.createdPlaylist.ui.CreatedPla
 import com.example.playlistmaker.utils.debounceDelay
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
 class PlaylistFragment : Fragment() {
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
@@ -68,12 +69,11 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun customizeRecyclerView() {
-        binding.playlistRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.playlistRecyclerView.adapter = playlistsAdapter
+        binding.playlistsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.playlistsRecyclerView.adapter = playlistsAdapter
 
-        binding.newPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment)
-        }
+        binding.newPlaylistButton.setOnClickListener { findNavController().navigate(R.id.action_libraryFragment_to_newPlaylistFragment) }
+
         playlistsAdapter.onItemClick = { playlist ->
             onPlaylistClickDebounce(playlist)
         }
@@ -87,8 +87,8 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun showSuccess(playlists: List<Playlist>) {
-        binding.emptyPlaylistLayout.visibility = View.GONE
-        binding.playlistRecyclerView.visibility = View.VISIBLE
+        binding.noPlaylists.visibility = View.GONE
+        binding.playlistsRecyclerView.visibility = View.VISIBLE
 
         playlistsAdapter.playlists.clear()
         playlistsAdapter.playlists.addAll(playlists)
@@ -96,8 +96,8 @@ class PlaylistFragment : Fragment() {
     }
 
     private fun showNoPlaylists() {
-        binding.emptyPlaylistLayout.visibility = View.VISIBLE
-        binding.playlistRecyclerView.visibility = View.GONE
+        binding.noPlaylists.visibility = View.VISIBLE
+        binding.playlistsRecyclerView.visibility = View.GONE
     }
 
     companion object {

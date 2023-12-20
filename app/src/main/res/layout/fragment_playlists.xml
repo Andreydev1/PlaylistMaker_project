@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:background="?attr/background_color"
+    android:padding="12dp"
+    android:orientation="vertical"
     tools:context=".library.playlists.ui.PlaylistFragment">
-
 
     <Button
         android:id="@+id/newPlaylistButton"
@@ -25,7 +25,7 @@
         app:cornerRadius="54dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/playlist_recyclerView"
+        android:id="@+id/playlists_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible"
@@ -34,7 +34,7 @@
         tools:listitem="@layout/playlist_item_card" />
 
     <LinearLayout
-        android:id="@+id/emptyPlaylistLayout"
+        android:id="@+id/no_playlists"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -43,15 +43,15 @@
         <ImageView
             android:layout_width="@dimen/library_empty_icon_size"
             android:layout_height="@dimen/library_empty_icon_size"
+            android:layout_gravity="center"
             android:layout_marginTop="48dp"
-            app:srcCompat="@drawable/ic_nothing_found"
-            android:layout_gravity="center" />
+            app:srcCompat="@drawable/ic_nothing_found" />
 
         <TextView
+            style="@style/LibraryTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/library_playlists_empty"
-            style="@style/LibraryTextStyle" />
+            android:text="@string/library_playlists_empty" />
     </LinearLayout>
 </LinearLayout>

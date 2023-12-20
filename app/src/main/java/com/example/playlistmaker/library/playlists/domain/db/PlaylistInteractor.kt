@@ -21,6 +21,5 @@ interface PlaylistInteractor {
         description: String,
         coverPath: String
     )
-
     fun sharePlaylist(playlist: String): Intent
 }

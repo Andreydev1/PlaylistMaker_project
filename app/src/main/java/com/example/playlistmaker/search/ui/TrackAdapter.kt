@@ -15,7 +15,7 @@ class TrackAdapter(private val coverResolution: String = "100") :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
-        return TrackViewHolder(view)
+        return TrackViewHolder(view, coverResolution)
     }
 
     override fun getItemCount(): Int = tracks.size

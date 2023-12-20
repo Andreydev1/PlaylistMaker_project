@@ -9,17 +9,15 @@ import com.example.playlistmaker.search.data.DataBasePlaylistConvertor
 import com.example.playlistmaker.search.data.DataBaseTrackConvertor
 import com.example.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class PlaylistRepositoryImpl(
     private val appDatabase: AppDataBase,
     private val dataBasePlaylistConvertor: DataBasePlaylistConvertor,
     private val trackDbConvertor: DataBaseTrackConvertor
 ) : PlaylistRepository {
-    override suspend fun getPlaylists(): Flow<List<Playlist>> = flow {
-        val playlists = appDatabase.playlistDao().getPlaylist()
-        emit(convertFromPlaylistEntity(playlists))
-    }
+    override suspend fun getPlaylists(): Flow<List<Playlist>> =
+        appDatabase.playlistDao().getPlaylist().map { convertFromPlaylistEntity(it) }
 
     override suspend fun addTrackInPlaylist(track: Track, playlist: Playlist): Boolean {
         if (playlist.id != null) {

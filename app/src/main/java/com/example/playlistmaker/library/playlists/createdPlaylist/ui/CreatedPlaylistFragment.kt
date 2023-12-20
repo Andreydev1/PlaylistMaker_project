@@ -25,6 +25,11 @@ import com.example.playlistmaker.search.ui.TrackAdapter
 import com.example.playlistmaker.utils.debounceDelay
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CreatedPlaylistFragment : Fragment() {
@@ -35,6 +40,10 @@ class CreatedPlaylistFragment : Fragment() {
     private lateinit var tracksBottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private var isShareButtonEnabled = true
+    private val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
+
     private val tracksAdapter = TrackAdapter("60")
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private lateinit var createdPlaylist: Playlist
@@ -59,21 +68,13 @@ class CreatedPlaylistFragment : Fragment() {
         initBottomSheet()
 
         binding.playlistBack.setOnClickListener { goBack() }
-        binding.playlistShare.setOnClickListener {
-            viewModel.sharePlaylist(
-                createdPlaylist,
-                tracksAdapter.tracks
-            )
-        }
+
+
         binding.playlistMenu.setOnClickListener {
             menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-        binding.playlistMenuShare.setOnClickListener {
-            viewModel.sharePlaylist(
-                createdPlaylist,
-                tracksAdapter.tracks
-            )
-        }
+
+
         binding.playlistMenuEdit.setOnClickListener { editPlaylist() }
         binding.playlistMenuDelete.setOnClickListener {
             confirmDialog = MaterialAlertDialogBuilder(requireContext())
@@ -117,13 +118,40 @@ class CreatedPlaylistFragment : Fragment() {
 
         tracksBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {}
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
         })
 
         tracksAdapter.onItemClick = { track ->
             onTrackClickDebounce(track)
+        }
+
+
+        binding.playlistShare.setOnClickListener {
+            if (isShareButtonEnabled) {
+                viewModel.sharePlaylist(createdPlaylist, tracksAdapter.tracks)
+                isShareButtonEnabled = false
+            }
+            coroutineScope.launch {
+                delay(1000)
+                isShareButtonEnabled = true
+            }
+        }
+
+        binding.playlistMenuShare.setOnClickListener {
+            if (isShareButtonEnabled) {
+                viewModel.sharePlaylist(createdPlaylist, tracksAdapter.tracks)
+                isShareButtonEnabled = false
+            }
+            coroutineScope.launch {
+                delay(1000)
+                isShareButtonEnabled = true
+            }
         }
 
         tracksAdapter.onLongItemClick = { track ->
@@ -146,12 +174,15 @@ class CreatedPlaylistFragment : Fragment() {
                 startActivity(player)
             }
 
+
         binding.playlistTracksRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.playlistTracksRecyclerView.adapter = tracksAdapter
 
         menuBottomSheetBehavior = BottomSheetBehavior.from(binding.playlistMenuBottomSheet)
         menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+
+
 
         menuBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {

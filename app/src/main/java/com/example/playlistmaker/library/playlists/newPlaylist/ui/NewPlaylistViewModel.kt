@@ -13,8 +13,10 @@ class NewPlaylistViewModel(
     private val newPlaylistInteractor: NewPlaylistInteractor,
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
+
     private val playlistLiveData = MutableLiveData<Playlist>()
     fun observePlaylist(): LiveData<Playlist> = playlistLiveData
+
 
     fun createPlaylist(name: String, description: String, coverPath: String) {
         viewModelScope.launch {

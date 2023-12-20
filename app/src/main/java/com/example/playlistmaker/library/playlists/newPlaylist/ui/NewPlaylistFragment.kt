@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
 
 
 class NewPlaylistFragment : Fragment() {
@@ -70,12 +71,10 @@ class NewPlaylistFragment : Fragment() {
             if (currentPlaylistId != null)
                 viewModel.getPlaylistInfo(currentPlaylistId)
         }
-
-        viewModel.observePlaylist().observe(viewLifecycleOwner) {
-            currentPlaylist = it
-            setPlaylistInfo(it)
+        viewModel.observePlaylist().observe(viewLifecycleOwner) { playlist ->
+            currentPlaylist = playlist
+            setPlaylistInfo(playlist)
         }
-
 
         initCoverPicker()
         initTextWatchers()
@@ -174,7 +173,7 @@ class NewPlaylistFragment : Fragment() {
             filePath.mkdirs()
         }
 
-        val file = File(filePath, playlistName + ".jpg")
+        val file = File(filePath, UUID.randomUUID().toString() + ".jpg")
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory
@@ -315,7 +314,6 @@ class NewPlaylistFragment : Fragment() {
         ).show()
         navigateOut()
     }
-
 
     companion object {
         private const val PLAYLIST_ID = "playlist_id"

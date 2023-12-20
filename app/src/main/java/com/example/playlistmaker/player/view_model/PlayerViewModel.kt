@@ -23,6 +23,10 @@ class PlayerViewModel(
     private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
+    companion object {
+        private const val PLAYING_TIME_UPDATING_DELAY = 300L
+    }
+
     private var timerJob: Job? = null
 
     private val playerState = MutableLiveData<PlayerState>(PlayerState.Default())
@@ -55,7 +59,7 @@ class PlayerViewModel(
         }
     }
 
-    private fun startUpdateTime() {
+    private fun startTimer() {
         timerJob = viewModelScope.launch {
             while (player.isPlaying()) {
                 delay(PLAYING_TIME_UPDATING_DELAY)
@@ -67,7 +71,7 @@ class PlayerViewModel(
 
     private fun startPlayer() {
         player.start()
-        startUpdateTime()
+        startTimer()
     }
 
     fun pausePlayer() {
@@ -143,12 +147,8 @@ class PlayerViewModel(
             }
         }
     }
-
-
-    companion object {
-        private const val PLAYING_TIME_UPDATING_DELAY = 300L
-    }
 }
+
 
 
 

@@ -6,9 +6,11 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.playlistmaker.library.favorites.data.entity.PlaylistEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaylistDao {
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPlaylist(playlist: PlaylistEntity)
@@ -28,7 +30,7 @@ interface PlaylistDao {
     )
 
     @Query("SELECT * FROM playlist_table ORDER BY creation_time DESC")
-    suspend fun getPlaylist(): List<PlaylistEntity>
+    fun getPlaylist(): Flow<List<PlaylistEntity>>
 
     @Query("SELECT * FROM playlist_table WHERE id=:playlistId")
     suspend fun getPlaylistInfo(playlistId: Long): PlaylistEntity

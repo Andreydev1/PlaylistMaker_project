@@ -72,6 +72,7 @@ class PlayerActivity : AppCompatActivity() {
         initBottomSheet()
     }
 
+
     fun closeNewPlaylistFragment() {
         val newPlaylistFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
         if (newPlaylistFragment != null && newPlaylistFragment is NewPlaylistFragment) {
@@ -122,7 +123,7 @@ class PlayerActivity : AppCompatActivity() {
         binding.playerTrackGenreData.text = track.primaryGenreName
         binding.playerTrackCountryData.text = track.country
         Glide.with(applicationContext)
-            .load(track.getCoverArtWork())
+            .load(track.getCoverArtWork("512"))
             .centerCrop()
             .transform((RoundedCorners(resources.getDimensionPixelSize(R.dimen.player_rounded_corners))))
             .placeholder(R.drawable.medialib_cover_placeholder)
@@ -137,7 +138,6 @@ class PlayerActivity : AppCompatActivity() {
         binding.playlistsRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.playlistsRecyclerView.adapter = playlistsAdapter
-
         bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistsBottomSheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
