@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.playlists.createdPlaylist.ui
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import com.example.playlistmaker.library.playlists.newPlaylist.ui.NewPlaylistFra
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.domain.models.Track
 import com.example.playlistmaker.search.ui.TrackAdapter
+import com.example.playlistmaker.utils.BottomNavigationListener
 import com.example.playlistmaker.utils.debounceDelay
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -47,6 +49,7 @@ class CreatedPlaylistFragment : Fragment() {
     private val tracksAdapter = TrackAdapter("60")
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private lateinit var createdPlaylist: Playlist
+    private var bottomNavigationListener: BottomNavigationListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,6 +94,7 @@ class CreatedPlaylistFragment : Fragment() {
                 }
             confirmDialog.show()
         }
+        bottomNavigationListener?.setBottomNavigationVisibility(false)
     }
 
     private fun editPlaylist() {
@@ -248,7 +252,7 @@ class CreatedPlaylistFragment : Fragment() {
             .into(binding.playlistCover)
 
         if (playlist.description.isEmpty())
-            binding.playlistDescription.text = resources.getText(R.string.empty_description)
+            binding.playlistDescription.visibility = View.GONE
         else
             binding.playlistDescription.visibility = View.VISIBLE
 
@@ -277,6 +281,20 @@ class CreatedPlaylistFragment : Fragment() {
             .centerCrop()
             .placeholder(R.drawable.medialib_cover_placeholder)
             .into(binding.menuPlaylistCover)
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is BottomNavigationListener) {
+            bottomNavigationListener = context
+        }
+    }
+
+
+    override fun onDetach() {
+        super.onDetach()
+        bottomNavigationListener = null
     }
 
 

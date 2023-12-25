@@ -94,7 +94,6 @@
     <string name="yes">Да</string>
     <string name="save">Сохранить</string>
     <string name="edit">Редактировать</string>
-    <string name="empty_description">2022</string>
 
 
     <plurals name="tracks_plurals">

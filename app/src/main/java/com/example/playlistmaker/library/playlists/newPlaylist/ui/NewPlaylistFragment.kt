@@ -40,8 +40,8 @@ class NewPlaylistFragment : Fragment() {
     private var _binding: FragmentNewPlaylistBinding? = null
     private var currentPlaylist: Playlist? = null
     private var coverUri: Uri? = null
-    private var bottomNavigationListener: BottomNavigationListener? = null
 
+    private var bottomNavigationListener: BottomNavigationListener? = null
 
     private var coverPath = ""
     private var backPressedOnce = false
