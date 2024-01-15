@@ -12,7 +12,8 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class TrackViewHolder(itemView: View, private val coverResolution: String) :
+    RecyclerView.ViewHolder(itemView) {
 
     private val artworkUrl100: ImageView = itemView.findViewById(R.id.track_image)
     private val trackName: TextView = itemView.findViewById(R.id.track_name)
@@ -26,7 +27,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         trackTime.text =
             SimpleDateFormat("mm:ss", Locale.getDefault()).format(model.trackTime?.toInt() ?: 0)
         Glide.with(itemView)
-            .load(model.artworkUrl100)
+            .load(model.getCoverArtWork(coverResolution))
             .centerCrop()
             .transform(RoundedCorners(itemView.resources.getDimensionPixelSize(R.dimen.track_rounded_corners)))
             .placeholder(R.drawable.medialib_cover_placeholder)

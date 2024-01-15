@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:windowSoftInputMode="adjustResize">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -30,6 +31,7 @@
             </FrameLayout>
 
             <TextView
+                android:id="@+id/header_text"
                 style="@style/HeaderTextStyle"
                 android:text="@string/library_new_playlist" />
         </LinearLayout>

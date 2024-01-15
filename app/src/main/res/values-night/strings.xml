@@ -3,4 +3,8 @@
     <string name="nothing_found_string">Ничего не нашлось</string>
     <string name="refresh_button_string">Обновить</string>
     <string name="no_internet_connection">Проверьте подключение к интернету</string>
+    <string name="created_playlists_share">Поделиться</string>
+    <string name="created_playlists_edit_info">Редактировать информацию</string>
+    <string name="created_playlists_delete_playlist">Удалить плейлист</string>
+    <string name="created_playlist_delete_question_message">Хотите удалить плейлист «%s»?</string>
 </resources>

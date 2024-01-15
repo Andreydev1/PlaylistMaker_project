@@ -264,7 +264,6 @@
             android:id="@+id/new_playlist"
             style="@style/PlaylistButton"
             android:fontFamily="@font/ys_display_medium"
-
             android:text="@string/library_new_playlist" />
 
         <androidx.recyclerview.widget.RecyclerView

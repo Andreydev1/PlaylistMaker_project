@@ -11,6 +11,7 @@
         <!-- Status bar color. -->
 
         <!-- Customize your theme here. -->
+        <item name="playlist_size">@color/light_gray</item>
         <item name="background_color">@color/ultra_white</item>
         <item name="background_main_color">@color/background_blue</item>
         <item name="text_color">@color/deep_gray</item>

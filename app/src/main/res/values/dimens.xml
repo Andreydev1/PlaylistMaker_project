@@ -35,7 +35,7 @@
     <dimen name="track_time_margin_start">-100dp</dimen>
     <dimen name="arrow_margin_end">20dp</dimen>
     <dimen name="arrow_margin_top">15dp</dimen>
-    <dimen name="track_rounded_corners">2dp</dimen>
+    <dimen name="track_rounded_corners">8dp</dimen>
     <dimen name="player_rounded_corners">8dp</dimen>
     <dimen name="progress_bar_dimens">44dp</dimen>
     <dimen name="library_empty_icon_size">120sp</dimen>
@@ -49,4 +49,5 @@
     <dimen name="library_text_size">19sp</dimen>
     <dimen name="playlist_cover_corner_radius">8px</dimen>
     <dimen name="root_bottom_navigation_text_size">12sp</dimen>
+    <dimen name="search_track_size">11dp</dimen>
 </resources>

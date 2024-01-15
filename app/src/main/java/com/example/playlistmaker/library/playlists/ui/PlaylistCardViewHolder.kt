@@ -17,7 +17,11 @@ class PlaylistCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     fun bind(playlist: Playlist) {
         playlistName.text = playlist.name
-        playlistSize.text = playlist.size.toString() + " треков"
+        playlistSize.text = itemView.context.resources.getQuantityString(
+            R.plurals.tracks_plurals,
+            playlist.size,
+            playlist.size
+        )
 
         Glide.with(itemView)
             .load(playlist.coverPath)
