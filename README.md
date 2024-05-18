@@ -6,6 +6,9 @@
 <div align="center">
     <a href="https://android-arsenal.com/api?level=26">
         <img src="https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat" alt="API">
+        <img src="https://img.shields.io/badge/Android-blue") alt="Android">
+        <img src="https://img.shields.io/badge/MVVM-pink") alt="MVVM">
+        <img src="https://img.shields.io/badge/Kotlin-purple") alt="Kotlin">
     </a>
 </div>
 
