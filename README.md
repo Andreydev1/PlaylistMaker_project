@@ -22,7 +22,7 @@
 
 ## Screenshoots   
 ![Screenshot 2](https://github.com/Andreydev1/PlaylistMaker_project/blob/main/Readme/screenshot2.jpg)
-![Screenshot 2](https://github.com/Andreydev1/PlaylistMaker_project/blob/main/Readme/screenshot2.jpg)
+![Screenshot 2](https://github.com/Andreydev1/PlaylistMaker_project/blob/main/Readme/Group%203.jpg)
 
 ## Tech Stack
 
